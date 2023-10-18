@@ -1,0 +1,64 @@
+<%- include('../admin/layouts/header')%>
+<%- include('../admin/partials/adminheader')%>
+
+<div class="container">
+    <div class="d-flex justify-content-between">
+        <h1 class="icons">Categories</h1>
+        <a href="/admin/addcategory"><button class="btn btn-success">ADD CATEGORY</button></a>
+
+    </div>
+    <div class="container">
+        <div class="row">
+          <% category.forEach(function(category){ %>
+            <div class="col-md-2">
+              <div class="card mb-4">
+                <img src="/uploads/<%= category.imageUrl %>" class="card-img-top" alt="<%= category.name %>">
+                <div class="card-body d-flex flex-column justify-content-between"style=" height: 25vh;">
+                  <h5 class="card-title"><%= category.name %></h5>
+                  <div class="category-actions">
+                    <a href="/admin/editcategory/<%= category._id %>" class="btn btn-primary">Edit</a>
+                    <% if(category.Status === 'Active') { %>
+                    <a href="/admin/deletecategory/<%= category._id %>">
+                    <button onclick="return confirm('are you sure want to block??')" class="btn btn-danger">Delete</button>
+                    </a>
+                    <% }else if(category.Status ==='Blocked') { %>
+                      <a href="/admin/deletecategory/<%= category._id %>">
+                        <button onclick="return confirm('are you sure want to unblock category')" class="btn btn-success">Add</button>
+                      </a>
+                      <% } %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+
+
+      <div class="d-flex justify-content-between">
+        <h1 class="icons">Brands</h1>
+        <a href="/admin/addbrands"><button class="btn btn-success">ADD BRAND</button></a>
+
+    </div>
+    <div class="container">
+        <div class="row">
+          <% brand.forEach(function(brand) { %>
+            <div class="col-md-2">
+              <div class="card mb-4">
+                <div class="card-body">
+                    <div>
+                        <h5 class="card-title"><%= brand.name %></h5>
+                    </div>
+                  <div class="brand-actions">
+                    <a class="text-decoration-none" href="/admin/edit/<%= brand._id %>" >Edit</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+      
+</div>
+
+<%- include('../admin/layouts/footer') %>

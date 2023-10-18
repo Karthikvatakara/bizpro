@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../public/stylesheet/userstylesheet/signup.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/css/ionicons-core.min.css" integrity="sha512-OmevVDECSDeo7M4G+Nvh0+VLVGS2XnEOkXWJcJ0TRom3GpGgc/ryQIgpRZw20mb5eR2U0sqsm33MaR8yD1zdsQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Times New Roman:ital,wght@0,400;0,700;1,700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=SF Pro Text:wght@600&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Public Sans:wght@400;500;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Spartan:wght@400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM Sans:wght@700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Doppio One:wght@400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto Slab:wght@400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Abhaya Libre:wght@700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Tenor Sans:wght@400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inder:wght@400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Imprima:wght@400&display=swap"
+    />
+  <title>Document</title>
+</head>
+<body>
+  
+  <%- include('./partials/userheader')%>
+  <section id="signupCard" class="vh-100">
+    <div class="container" >
+      <div class="row justify-content-center">
+        <div class="col-lg-6 ">
+          <div class="card mt-4 mb-3 ">
+            <div class="card-body mt-3">
+              <div class="icons text-center">
+                <h1>SIGN UP</h1>
+            </div>
+                <form id="signupForm" class="icons" action="/signup" method="post">
+                  <% if (messages.error) { %>
+                  <div class="alert alert-danger"><%= messages.error %></div>
+                  <% } %>
+                  <div class="form-group" >
+                    <label for="name">Name</label>
+                    <input
+                      type="text"
+                      class="form-control mt-2"
+                      id="name"
+                      name="name"
+                      placeholder="Enter your name"
+                      required
+                    />
+                  </div>
+                  <div class="form-group mt-3">
+                    <label for="email">Email Address</label>
+                    <input
+                      type="email"
+                      class="form-control mt-2"
+                      id="email"
+                      name="email"
+                      placeholder="Enter your email address"
+                      required
+                    />
+                  </div>
+                  <div class="form-group mt-3">
+                    <label for="password">Password</label>
+                    <div class="input-group mt-2">
+                      <input
+                        type="password"
+                        class="form-control"
+                        name="password"
+                        id="passwordInput"
+                        placeholder="Enter your password"
+                        minlength="8"
+                        required
+                      />
+                      <div class="input-group-append">
+                        <button
+                          class="btn btn-outline-none"
+                          type="button"
+                          id="showPasswordOne"
+                          onclick="togglePassword('passwordInput')"
+                        >
+                          <i class="fas fa-eye"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <p id="strength">Strength:</p>
+                  <div class="from-group mt-3">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="input-group mt-2">
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="confirmPasswordInput"
+                        name="confirmpassword"
+                        placeholder="Confirm your password"
+                        required
+                      />
+                      <div class="input-group-append">
+                        <button
+                          class="btn btn-outline-none"
+                          type="button"
+                          id="showPasswordTwo"
+                          onclick="togglePassword('confirmPasswordInput')"
+                        >
+                          <i class="fas fa-eye"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center mt-3">
+                    <button
+                      type="submit"
+                      class="btn text-center text-white sign-in1 btn-lg"
+                      id="togglePassword"
+                      style="
+                        background-color: #2123cb;
+                        width: -webkit-fill-available;
+                        border: none;
+                      "
+                    >
+                      Sign up
+                    </button>
+                  </div>
+                </form>
+                <div class="mt-3">
+                  <p class="text-center">or</p>
+                </div>
+                <div class="mt-3 text-center">
+                  <p class="text-center">
+                    Already have an account? <a href="/login">Sign In</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/7.1.2/esm/ionicons.min.js" integrity="sha512-2ySmquu6HK3CAvwLllh0R8K8buFPMZsUwWLZIlB7WW8c8ilUtoNyhsmEsQn2U0IV1USr2Oc/9DJzlr4cxAbuxA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    function togglePassword(inputId) {
+      var x = document.getElementById(inputId);
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+  
+    document.addEventListener('DOMContentLoaded', function () {
+      const passwordInput = document.getElementById('passwordInput');
+      const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+      const showPasswordOne = document.getElementById('showPasswordOne');
+      const showPasswordTwo = document.getElementById('showPasswordTwo');
+  
+      showPasswordOne.addEventListener('click', function () {
+        togglePassword('passwordInput');
+      });
+  
+      showPasswordTwo.addEventListener('click', function () {
+        togglePassword('confirmPasswordInput');
+      });
+    });
+  </script>
+  
+  
+</body>
+</html>

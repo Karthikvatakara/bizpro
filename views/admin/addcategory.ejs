@@ -1,0 +1,55 @@
+<%- include('../admin/layouts/header')%>
+<%- include('../admin/partials/adminheader')%>
+<div class="container-fluid">
+    <div class="row  border-start">
+        <main class="px-md-4 icons">
+            <div class="row d-flex justify-content-between">
+                <div class="col-md-8">
+                    <h1 class="mt-5">ADD CATEGORY</h1>
+                    <form action="/admin/addcategory" method="post" enctype="multipart/form-data" class="bg-white">
+                        <div class="form-group">
+                            <label for="categoryname">Category Name:</label>
+                            <input
+                                type="text"
+                                name="name"
+                                class="form-control bg-light"
+                                id="categoryName"
+                                placeholder="Enter Category name"
+                                required
+                            />
+                        </div><br><br>
+                        Image:
+                        <div class="border p-3 mb-3 bg-light "> <!-- Added bg-light and text-center classes -->
+                            <h3>Media</h3>
+                            <div class="form-group text-center">
+                                <label for="categoryImage">Drag and drop or click to upload an image:</label>
+                                <br><br><br><br>
+                                <input
+                                type="file"
+                                name="imageUrl"
+                                class="form-control-file text-center"
+                                id="categoryImage"
+                                accept="image/*"
+                                multiple
+                                style="display: none;"
+                                required
+                            />
+                            </div>
+                            <br>
+                            <!-- uploaded images -->
+                            <div class="text-center">
+                                <img src="" alt="Uploaded Image" id="uploadedImage" class="img-fluid" style="max-height: 200px;">
+                                <button onclick="return confirm('Are you sure you want to delete the image')" class="btn btn-danger btn-sm deletes-image" style="display: none;">Delete</button>
+                              </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary ms-3">Add Category</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+
+
+<%- include('../admin/layouts/footer') %>

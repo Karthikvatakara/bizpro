@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../stylesheet/userstylesheet/home.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/css/ionicons-core.min.css" integrity="sha512-OmevVDECSDeo7M4G+Nvh0+VLVGS2XnEOkXWJcJ0TRom3GpGgc/ryQIgpRZw20mb5eR2U0sqsm33MaR8yD1zdsQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <title>Document</title>
+</head>
+<body>
+
+
+
+<header>
+    <nav class="navbar bg-body-tertiary p-0">
+      <div class="container-fluid d-flex justify-content-between align-items-middle" style="background-color: whitesmoke;">
+          <div class="align-self-start"> <!-- Align the image to the left -->
+              <a class="navbar-brand" href="/homepage">
+                  <img src="/images/screenshot--272-removebgpreview-1@2x.png" style="max-height: 70px;" alt="">
+              </a>
+          </div>
+          <div class=" me-5"> 
+            <div class="d-flex gap-3 align-items-center">
+              <div>
+                <a class="text-decoration-none text-dark" href="/homepage">
+                <span> Home</span>
+                </a>
+              </div>
+              <div>
+                <a class="text-decoration-none text-dark" href="/usershop">
+                <span> Shop</span>
+                </a>
+              </div>
+              <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
+              <div>
+                <a class="text-decoration-none text-dark" href="">
+                <i class="fa-solid fa-heart text-danger " ></i>
+                </a>
+              </div>
+              <div>
+                <a class="text-decoration-none text-dark " href="/cart">
+                <i class="fa-solid fa-cart-shopping text-primary"></i>
+                </a>
+              </div>
+                <div>
+                    <% if(user) { %>
+                      <div class="dropdown">
+                        <a href="#" class="dropdown-toggle text-decoration-none text-dark" id="usernameLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            <%= user.name %> <i class="fa-solid fa-user"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="usernameLink">
+                            <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/logout" id="logoutLink">Logout</a></li>
+                        </ul>
+                    </div>
+                      <%} else { %>
+                        <a class="text-decoration-none text-dark" href="/signup">
+                            <i class="fa-solid fa-user"></i><span>
+                              signup
+                          </a>
+                        <%}%>
+                    </span>
+                  </a>
+                </div>
+              </div>
+          </div>
+      </div>
+    </nav>
+    </header>
+
+
+
+
+<section>     
+<div>
+    <img src="/assets/homeimage.png" class="img-fluid" alt="...">
+</div>
+</section> 
+
+
+<!-- <section id="pricing" class="bg-white justify-content-center">
+  <div class="container-fluid">
+      <div class="text-center">
+      <h4>Categories</h4>
+      <p class="lead text-muted"> choose a equipment suit to you</p>
+  </div>
+<div class="row  g-0 align-items-center justify-content-center">
+    <% category.forEach(category => { %>
+  <div class="col-12 col-md-3 col-lg-2 mb-4">
+      <div class="card" style="width: 10rem;">
+         <a href="/usershop/category/<%= category._id %>"> <img src="/uploads/<%= category.imageUrl %>" class="card-img-top" alt="..." height="150px"></a>
+          <div class="card-body">
+              <p class="card-text text-center"><%= category.name %></p>
+          </div>
+      </div>
+  </div>
+    <% }) %>
+</div>
+</section> -->
+
+
+<div class=" text-center" style="background-color: #9bd6f7;">
+    <div class="text center">
+        <h5 class="icons categories">choose a equipment suit to you</h5>
+    </div>
+    <div class="container">
+        <div class="row">
+            <% category.forEach(function(category) { %>
+            <div class="col-2 icons">
+                <a href="/usershop/category/<%= category._id %>"><img class="img-fluid equal-width" src="/uploads/<%=category.imageUrl %>" alt="Image 1"></a>
+                <%=category.name%>
+            </div>
+            <% }); %>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <section id="listing" class="bg-light justify-content-center">
+    <div class="container">
+       
+  <div class="row my-4 g-0 align-items-center justify-content-center ">
+    <% product.forEach(product => {%>
+    <div class="col-12 col-md-3 col-lg-3">
+        <div class="card my-5" style="width: 10rem;">
+            <a href=""><img src="/uploads/<%= product.imageUrl[0] %> " class="card-img-top" alt="..."></a>
+            <div class="card-body">
+                <p class="card-text text-center"><%=product.name%></p>
+                <p class="card-text text-center"><%=product.price%></p>
+            </div>
+        </div>
+    </div>
+    <%})%>
+</div> -->
+
+
+
+<div class="container mt-5">
+    <div class="row">
+        <% product.forEach(function(product) { %>
+            <div class=" col-lg-4 col-xl-3 col-sm-6 mb-4 equal-width">
+                <div class="card" >
+                    <img src="/uploads/<%= product.imageUrl[0] %>" class="card-img-top " style=" height: 40vh;" alt="">
+                    <div class="card-body d-flex flex-column justify-content-between" style=" height: 30vh;">
+                        <h5 class="card-title text-center"><%=product.ProductName %></h5>
+                        <div class="d-flex flex-column justify-content-center">
+                            <% if (product.AvailableQuantity === 0) { %>
+                                <div style="background-color: red;">
+                                    <p class="card-text text-center text-light">Out of Stock</p>
+                                </div>
+                            <% } else { %>
+                            <p class="card-text text-center">Price ₹<%=product.Price %></p>
+                            <a  href="/product/<%= product._id %>" class="btn btn-primary text-center">View Details</a>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</div>
+
+
+
+<footer class="footer-section">
+  <div class="container">
+    <div class="footer-cta pt-5 pb-5" >
+    <div class="row">
+              <div class="col-xl-4 col-md-4 mb-30">
+                  <div class="single-cta">
+                      <i class="fas fa-map-marker-alt"></i>
+                      <div class="cta-text">
+                          <h4>Find us</h4>
+                          <span>1010 Avenue, sw 54321, chandigarh</span>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-xl-4 col-md-4 mb-30">
+                  <div class="single-cta">
+                      <i class="fas fa-phone"></i>
+                      <div class="cta-text">
+                          <h4>Call us</h4>
+                          <span>9876543210 0</span>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-xl-4 col-md-4 mb-30">
+                  <div class="single-cta">
+                      <i class="far fa-envelope-open"></i>
+                      <div class="cta-text">
+                          <h4>Mail us</h4>
+                          <span>mail@info.com</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="footer-content pt-5 pb-5">
+          <div class="row">
+              <div class="col-xl-4 col-lg-4 mb-50">
+                  <div class="footer-widget">
+                      <div class="footer-logo">
+                          <a href="index.html"><img src="https://i.ibb.co/QDy827D/ak-logo.png" class="img-fluid" alt="logo"></a>
+                      </div>
+                      <div class="footer-text">
+                          <p>Lorem ipsum dolor sit amet, consec tetur adipisicing elit, sed do eiusmod tempor incididuntut consec tetur adipisicing
+                          elit,Lorem ipsum dolor sit amet.</p>
+                      </div>
+                      <div class="footer-social-icon">
+                          <span>Follow us</span>
+                          <a href="#"><i class="fab fa-facebook-f facebook-bg"></i></a>
+                          <a href="#"><i class="fab fa-twitter twitter-bg"></i></a>
+                          <a href="#"><i class="fab fa-google-plus-g google-bg"></i></a>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
+                  <div class="footer-widget">
+                      <div class="footer-widget-heading">
+                          <h3>Useful Links</h3>
+                      </div>
+                      <ul>
+                          <li><a href="#">Home</a></li>
+                          <li><a href="#">about</a></li>
+                          <li><a href="#">services</a></li>
+                          <li><a href="#">portfolio</a></li>
+                         
+                      </ul>
+                  </div>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-6 mb-50">
+                  <div class="footer-widget">
+                      <div class="footer-widget-heading">
+                          <h3>Subscribe</h3>
+                      </div>
+                      <div class="footer-text mb-25">
+                          <p>Don’t miss to subscribe to our new feeds, kindly fill the form below.</p>
+                      </div>
+                      <div class="subscribe-form">
+                          <form action="#">
+                              <input type="text" placeholder="Email Address">
+                              <button><i class="fab fa-telegram-plane"></i></button>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="copyright-area">
+      <div class="container">
+          <div class="row">
+              <div class="col-xl-6 col-lg-6 text-center text-lg-left">
+                  <div class="copyright-text">
+                      <p>Copyright &copy; 2018, All Right Reserved <a href="https://codepen.io/anupkumar92/">Anup</a></p>
+                  </div>
+              </div>
+              <div class="col-xl-6 col-lg-6 d-none d-lg-block text-right">
+                  <div class="footer-menu">
+                      <ul>
+                          <li><a href="#">Home</a></li>
+                          <li><a href="#">Terms</a></li>
+                          <li><a href="#">Privacy</a></li>
+                          <li><a href="#">Policy</a></li>
+                          <li><a href="#">Contact</a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</footer>
+
+    
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/7.1.2/esm/ionicons.min.js" integrity="sha512-2ySmquu6HK3CAvwLllh0R8K8buFPMZsUwWLZIlB7WW8c8ilUtoNyhsmEsQn2U0IV1USr2Oc/9DJzlr4cxAbuxA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+</html>

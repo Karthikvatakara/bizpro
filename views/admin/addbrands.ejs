@@ -1,0 +1,33 @@
+<%- include('../admin/layouts/header')%>
+<%- include('../admin/partials/adminheader')%>
+<div class="container-fluid">
+    <div class="row  border-start">
+        <main class="px-md-4 icons">
+            <div class="row d-flex justify-content-between">
+                <div class="col-md-8">
+                    <h1 class="mt-5">ADD BRANDS</h1>
+                    <form action="/admin/addbrands" method="post"  class="bg-white">
+                        <div class="form-group">
+                            <label for="categoryname">Category Name:</label>
+                            <input
+                                type="text"
+                                name="name"
+                                class="form-control bg-light"
+                                id="categoryName"
+                                placeholder="Enter Category name"
+                                required
+                            />
+                        </div><br><br>
+                        Image:
+                     
+                        <button type="submit" class="btn btn-primary ms-3">Add Category</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+
+
+<%- include('../admin/layouts/footer') %>

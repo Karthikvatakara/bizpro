@@ -1,0 +1,60 @@
+<header>
+  <nav class="navbar bg-body-tertiary p-0">
+    <div class="container-fluid d-flex justify-content-between align-items-middle" style="background-color: #f8eded;">
+        <div class="align-self-start"> <!-- Align the image to the left -->
+            <a class="navbar-brand" href="/homepage">
+                <img src="/images/screenshot--272-removebgpreview-1@2x.png" style="max-height: 70px;" alt="">
+            </a>
+        </div>
+        <div class=" me-5"> 
+          <div class="d-flex gap-3 align-items-center">
+            <div>
+              <a class="text-decoration-none text-dark" href="/homepage">
+              <span> Home</span>
+              </a>
+            </div>
+            <div>
+              <a class="text-decoration-none text-dark" href="/usershop">
+              <span> Shop</span>
+              </a>
+            </div>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+            <div>
+              <a class="text-decoration-none text-dark" href="">
+              <i class="fa-solid fa-heart text-danger " ></i>
+              </a>
+            </div>
+            <div>
+              <a class="text-decoration-none text-dark " href="/cart">
+              <i class="fa-solid fa-cart-shopping text-primary"></i>
+              </a>
+            </div>
+              <div>
+                  <% if(user) { %>
+                    <div class="dropdown">
+                      <a href="#" class="dropdown-toggle text-decoration-none text-dark" id="usernameLink" data-bs-toggle="dropdown" aria-expanded="false">
+                          <%= user.name %> <i class="fa-solid fa-user"></i>
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="usernameLink">
+                          <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="/logout" id="logoutLink">Logout</a></li>
+                      </ul>
+                  </div>
+                    <%} else { %>
+                      <a class="text-decoration-none text-dark" href="/signup">
+                          <i class="fa-solid fa-user"></i><span>
+                            signup
+                        </a>
+                      <%}%>
+                  </span>
+                </a>
+              </div>
+            </div>
+        </div>
+    </div>
+  </nav>
+  </header>

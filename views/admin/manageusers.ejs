@@ -1,0 +1,68 @@
+
+<%- include('../admin/layouts/header')%>
+<%- include('../admin/partials/adminheader')%>
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>USER LIST</h2>
+        <form action="/admin/userlist" method="get" class="form-group d-flex">
+          <div class="me-2">
+            <input type="text" name="search" class="form-control" placeholder="Search">
+          </div>
+            <button type="submit"  class="btn btn-secondary me-2">SEARCH USER</button>
+        </form>
+    </div>
+    <div class="table-responsive">
+        <div class="d-flex justify-content-end align-items-center">
+        </div>
+
+        <table class="table table-bordered table-shadow mt-3">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(user => { %>
+                    <tr>
+                      <td><%= user._id %></td>
+                      <td><%= user.name %></td>
+                      <td><%= user.Status %></td>
+                      <td>
+                        <% if (user.Status === 'Active') { %>
+                            <a href="/admin/userlist/<%=user._id%>"><button onclick="return confirm('Are you sure you want to  block the user')" class="btn btn-success " >Block</button></a>
+                        <% } else if (user.Status === 'Blocked') { %>
+                            <a href="/admin/userlist/<%=user._id%>"><button onclick="return confirm('Are you sure you want to  unblock the user')" class="btn btn-danger">Unblock</button></a>
+                        <% } %>
+                      </td>
+                    </tr>
+                  <% }); %>
+            </tbody>
+        </table>
+    </div>
+    
+    <% if (users.length > 0) { %>
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <p>Showing <%= (currentPage - 1) * perPage + 1 %>-
+          <% if(currentPage === totalPages){%>
+            <%=totalCount%>
+            <%}else{%>
+          <%= currentPage * perPage  %>
+          <%}%>
+           results from <%= totalCount %></p>
+        <ul class="pagination">
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+              <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+            </li>
+          <% } %>
+        </ul>
+      </div>
+      <% } else { %>
+        <p>No results found.</p>
+      <% } %>
+</div>
+

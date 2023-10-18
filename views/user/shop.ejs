@@ -1,0 +1,151 @@
+<%- include('../user/layouts/header')%>
+<%- include('../user/partials/userheader')%>
+<section>
+    <h1 class="text-center" style="text-shadow: 2px 2px 5px rgb(101, 226, 101); color:rgb(225, 65, 65)">SHOP</h1>
+<button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
+    <i class="fa-solid fa-sliders"></i>
+    FILTERS
+</button>
+<div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="staticBackdropLabel">FILTERS</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0 ">
+            <ul class="list-group">
+                <li class="list-group-item category-item">Category 
+                    <ul class="list-group subcategory-list">
+                        <% categories.forEach(function(category)  { %>
+                            <li class="list-group-item">
+                                <a href="/usershop/category/<%= category._id %>"><%= category.name %></a>
+                            </li>
+                        <% }) %>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="list-group">
+                <li class="list-group-item brand-item">Brand 
+                    <ul class="list-group subbrand-list">
+                        <% brands.forEach(function(brand) { %>
+                            <li class="list-group-item">
+                                <a href="/usershop/brand/<%= brand._id %>"><%= brand.name %></a>
+                            </li>
+                        <% }) %>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+</div>
+</section>
+<section>
+    <div class="container">
+        <div class="row">
+            <% products.forEach(function(product) { %>
+                <div class="col-md-3 col-sm-6 mb-4 equal-width">
+                    <div class="card" >
+                        <img src="/uploads/<%= product.imageUrl[0] %>" class="card-img-top " style=" height: 40vh;" alt="">
+                        <div class="card-body d-flex flex-column justify-content-between" style=" height: 30vh;">
+                            <h5 class="card-title text-center"><%= product.ProductName %></h5>
+                            <div class="d-flex flex-column justify-content-center">
+                                <% if (product.AvailableQuantity === 0) { %>
+                                    <div style="background-color: red;">
+                                        <p class="card-text text-center text-light">Out of Stock</p>
+                                    </div>
+                                <% } else { %>
+                                <p class="card-text text-center">Price ₹<%= product.Price %></p>
+                                <a  href="/product/<%= product._id %>" class="btn btn-primary text-center">View Details</a>
+                                <%}%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+        <% if (products.length > 0) { %>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <p>Showing <%= (currentPage - 1) * perPage + 1 %>-
+                  <%= currentPage * perPage  %> results from <%= totalCount %></p>
+                <ul class="pagination">
+                  <% for (let i = 1; i <= totalPages; i++) { %>
+                    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                      <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                    </li>
+                  <% } %>
+                </ul>
+              </div>
+              <% } else { %>
+                <p>No results found.</p>
+              <% } %>
+    </div>
+</section>
+
+
+
+<style>
+    /* Define styles for the left sidebar */
+    .sidebar {
+        background-color: #f8f9fa;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 16rem; /* Adjust the width as needed */
+        height: 100%;
+        padding: 20px;
+        overflow-y: auto; /* Enable vertical scrolling if content overflows */
+    }
+
+    /* Style for the categories and brands list */
+    .list-group-item:hover {
+        background-color: #e9ecef; /* Change the background color on hover */
+    }
+
+    /* Hide subcategories initially */
+    .subcategory-list,
+    .subbrand-list {
+        display: none;
+    }
+</style>
+<!-- JavaScript for hover effect -->
+<script>
+    // Add event listeners for category items
+    const categoryItems = document.querySelectorAll('.category-item');
+
+    categoryItems.forEach((item) => {
+        item.addEventListener('mouseenter', () => {
+            const subcategoryList = item.querySelector('.subcategory-list');
+            if (subcategoryList) {
+                subcategoryList.style.display = 'block';
+            }
+        });
+
+        item.addEventListener('mouseleave', () => {
+            const subcategoryList = item.querySelector('.subcategory-list');
+            if (subcategoryList) {
+                subcategoryList.style.display = 'none';
+            }
+        });
+    });
+
+    // Define brandItems and add event listeners for brand items
+    const brandItems = document.querySelectorAll('.brand-item');
+
+    brandItems.forEach((item) => {
+        item.addEventListener('mouseenter', () => {
+            const subbrandList = item.querySelector('.subbrand-list');
+            if (subbrandList) {
+                subbrandList.style.display = 'block';
+            }
+        });
+
+        item.addEventListener('mouseleave', () => {
+            const subbrandList = item.querySelector('.subbrand-list');
+            if (subbrandList) {
+                subbrandList.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+
+
+<%- include('../user/layouts/footer') %>

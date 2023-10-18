@@ -1,0 +1,83 @@
+<%- include('../admin/layouts/header')%>
+<%- include('../admin/partials/adminheader')%>
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>PRODUCT LIST</h2>
+       <a href="/admin/adminaddproduct"> <button  class="btn btn-primary"  id="addProduct">Add Product</button></a>
+    </div>
+
+    <div class="table-responsive mt-4">
+      <form action="/admin/adminshowproduct" method="get">
+        <div class="d-flex justify-content-end align-items-center">
+            <div class="form-group me-2">
+                <input type="text" name="search"  class="form-control" placeholder="Search">
+              </div>
+              <button  type="submit"  class="btn btn-secondary me-2">Search Product</button>
+             
+            </form>
+            <button class="btn btn-primary me-2">Filter</button>
+        </div>
+
+        <table class="table table-bordered table-striped table-hover mt-3">
+          <thead class="table-dark">
+            <tr>
+              <th>Product</th>
+              <th>Stock</th>
+              <th>Price</th>
+              <th>Discount Price</th>
+              <th>Status</th>
+              <th>Updated Date</th>
+              <th>Availability</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% product.forEach(product => { %>
+            <tr>
+              <td><%= product.ProductName %></td>
+              <td><%= product.AvailableQuantity %></td>
+              <td><%= product.Price %></td>
+              <td><%= product.DiscountAmount %></td>
+              <td><%= product.Status %></td>
+              <td><%= product.UpdatedOn %></td>
+              <td>
+                <a href="/admin/editproduct/<%=product._id%>">
+                  <button class="btn btn-primary btn-sm text-light">EDIT</button>
+                </a>
+              </td>
+              <td>
+                <% if (product.Display === 'Active') { %>
+                <a href="/admin/adminproduct/<%=product._id%>">
+                  <button  onclick="return confirm('are you sure to block??')" class="btn btn-success">Block</button>
+                </a>
+                <% } else if (product.Display === 'Inactive') { %>
+                <a href="/admin/adminproduct/<%=product._id%>">
+                  <button onclick="return confirm('Are you sure. You are going to unblock the user')" class="btn btn-danger">Unblock</button>
+                </a>
+                <% } %>
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+        
+    </div>
+    
+    <% if (product.length > 0) { %>
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <p>Showing <%= (currentPage - 1) * perPage + 1 %>-
+          <%= currentPage * perPage  %> results from <%= totalCount %></p>
+        <ul class="pagination">
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+              <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+            </li>
+          <% } %>
+        </ul>
+      </div>
+      <% } else { %>
+        <p>No results found.</p>
+      <% } %>
+</div>
+
+<%- include('../admin/layouts/footer') %>

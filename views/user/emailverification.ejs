@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/stylesheet/userstylesheet/emailverification.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/css/ionicons-core.min.css" integrity="sha512-OmevVDECSDeo7M4G+Nvh0+VLVGS2XnEOkXWJcJ0TRom3GpGgc/ryQIgpRZw20mb5eR2U0sqsm33MaR8yD1zdsQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+   
+    <%- include("./partials/userheader") %>
+
+      <section>
+        <main class="main">
+            <div class="container">
+              <section class="wrapper">
+                <div class="heading ">
+                  <h1 class="text text-large ">Verify your email address</h1>
+                  <p class="text text-normal">enter the otp recieved in your registered email id
+                  </p>
+                </div>
+                <form name="signin" class="form" action="/emailverification" method="post">
+                  <div class="input-control">
+                    <label for="email" class="input-label" hidden>Email Address</label>
+                    <input type="String" name="otp" id="text" class="input-field" required="true" placeholder="verification code">
+                  </div>
+                 
+                  <div class="method">
+                    <div class="method-control">
+                     <div class="justify-content-center"><button type="submit" class="bg-primary btn btn-primary ">Submit OTP</button></div> 
+                        <i class="ion ion-logo-google"></i>
+                      
+                    </div>  
+                </form>
+                
+                <div class="striped">
+                  <span class="striped-line"></span>
+                  <span class="striped-line"></span>
+                </div>
+               
+
+                  <div class="text-center">
+                    <a href="/resendotp">Resend Code</a>
+                </div>
+
+                </div>
+              </section>
+            </div>
+          </main>
+      </section>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/css/ionicons-core.min.css" integrity="sha512-OmevVDECSDeo7M4G+Nvh0+VLVGS2XnEOkXWJcJ0TRom3GpGgc/ryQIgpRZw20mb5eR2U0sqsm33MaR8yD1zdsQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</body>
+</html>

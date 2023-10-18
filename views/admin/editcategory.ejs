@@ -1,0 +1,59 @@
+<%- include('../admin/layouts/header')%>
+<%- include('../admin/partials/adminheader')%>
+
+<div class="container-fluid">
+    <div class="row  border-start">
+        <main class="px-md-4 icons">
+            <div class="row d-flex justify-content-between">
+                <div class="col-md-8 text-center">
+                    <h1 class="mt-5">EDIT CATEGORY</h1>
+                    <form action="/admin/editcategory/<%=category._id%>" method="post" enctype="multipart/form-data" class="bg-white">
+                        <div class="form-group">
+                            <label for="categoryname">Category Name:</label>
+                            <input
+                                type="text"
+                                value="<%=category.name%>"
+                                name="name"
+                                class="form-control bg-light"
+                                id="categoryName"
+                                placeholder="Enter Category name"
+                                required
+                            />
+                        </div><br><br>
+                        Image:
+                        <div class="border p-3 mb-3 bg-light text-center "> <!-- Added bg-light and text-center classes -->
+                            <h3>Media</h3>
+                            <div class="form-group text-center">
+                                <label for="categoryImage">Drag and drop or click to upload an image:</label>
+                                <br><br><br><br>
+                                <input
+                                type="file"
+                                name="imageUrl"
+                                class="form-control-file"
+                                id="categoryImage"
+                                accept="image/*"
+                                style="display: none;"
+                                multiple
+                            />
+                            </div>
+                            <!-- uploaded images -->
+                            <div class="row justify-content-center">
+                                <div class="col-md-4 ">
+                                    <div class="uploaded-image">
+                                        <img src="/uploads/<%=category.imageUrl%>" alt="Uploaded Image 1" id="uploadedImage" class="img-fluid" data-index="1">
+                                        <button onclick="return confirm('Are you sure you want to delete the image')" class="btn btn-danger btn-sm delete-image"  data-index="1">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary ms-3">Edit Category</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+
+
+<%- include('../admin/layouts/footer') %>
