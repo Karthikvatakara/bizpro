@@ -9,13 +9,14 @@ const nodemailer = require('../validator/nodemailer')
 const userAuth = require('../middlewares/userauth')
 const categoryModel = require('../model/categorymodel')
 const brandModel = require('../model/brandmodel')
+const cartModel = require('../model/cartmodel')
 
 
 //for displaying userhome
 const viewproduct = async(req,res) => {
     const product = await productModel.find({Display:'Active'})
     const category = await categoryModel.find({Status:'Active'})
-    console.log(req.session.user);
+    console.log(req.session.user,"this is user");
     if(product) {
         res.render('user/home',{product,user:req.session.user,category})
     }else{
@@ -67,20 +68,16 @@ const postlogin = async(req,res) => {
 
 // usersignup
 const signup = async(req,res) => {
-    res.render('user/signup',{messages:req.flash(),user:req.session.user})
+    res.render('user/signup',{messages:req.flash()})
 }
 
 
     ///post signup
     const logged = async(req,res) => {
         try{
-            
+            password = req.body.password
             const saltrounds = 10;
             const salt = await bcrypt.genSalt(saltrounds)
-            // console.log(salt);
-            console.log(req.body.password);
-            console.log(req.body.confirmpassword);
-            console.log(req.body.name);
             req.body.password = await bcrypt.hash(req.body.password,salt);
             req.body.confirmpassword = await bcrypt.hash(req.body.confirmpassword,salt);
 
@@ -89,11 +86,23 @@ const signup = async(req,res) => {
 
             const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
             const validEmail = emailRegex.test(email)
-            
-           
-            if(req.body.password == req.body.confirmpassword) {
-                if(validEmail){
-                    req.session.user = req.body
+
+            if(validEmail) {
+              if(req.body.password === req.body.confirmpassword){
+                    
+                  // if(req.body.password == req.body.confirmpassword)
+                  const specialCharRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\]/;
+                  const numberRegex = /\d/;
+                  const containsSpecialChar = specialCharRegex.test(password);
+                  const containsNumber = numberRegex.test(password);
+                  const hasMinimumLength = req.body.password.length >= 8;
+  
+                  if(containsSpecialChar){
+                      if(containsNumber) {
+                          if(hasMinimumLength){
+  
+                     req.session.user = req.body
+                    req.session.email = req.body.email
                     console.log(req.session.user);
 
                     const existinguser = await usermodel.findOne({email:req.body.email})
@@ -101,28 +110,73 @@ const signup = async(req,res) => {
                         req.flash('error',"email already exist")
                         console.log("email already exist" +error);
                         res.redirect('/signup')
-                        // res.send("email already exist")
+                        res.send("email already exist")
                     } else{
                        const otpToBeSent = otpfunctions.generateOTP()
                        const result = otpfunctions.sendOTP(req,res,email,otpToBeSent)
-                    //    res.send("new page")
-                    }
-                } else{
-                    req.flash('error',"invalid emailaddress")
-                    res.redirect('/signup')
-                }
-            } else {
-                req.flash('error',"password doesnt match")
-                res.redirect('/signup')
-                // res.send("password doesnt match")
-            }
-        
+                    //    res.send("new page") 
+                          }
 
-            }catch(error) {
-                console.log(error);
+                          }else{
+                              req.flash('error','password must have 8 letters')
+                              res.redirect('/signup')
+                          }
+                      }else{
+                          req.flash('error','not contains number')
+                          res.redirect('/signup')
+                      }
+  
+                  }else{
+                      req.flash('error','not contains special characters')
+                      res.redirect('/signup')
+                  }
+
+              }else{
+                req.flash('error','password doesnt match')
+                res.redirect('/signup')
+              }
+            }
+            else{
+                req.flash('error','email not correct')
                 res.redirect('/signup')
             }
+        }catch(error) {
+            console.log(error);
+            res.redirect('/signup')
         }
+    }
+
+            
+           
+        //     if(req.body.password == req.body.confirmpassword) {
+        //         if(validEmail){
+        //             req.session.user = req.body
+        //             req.session.email = req.body.email
+        //             console.log(req.session.user);
+
+        //             const existinguser = await usermodel.findOne({email:req.body.email})
+        //             if(existinguser) {
+        //                 req.flash('error',"email already exist")
+        //                 console.log("email already exist" +error);
+        //                 res.redirect('/signup')
+        //                 // res.send("email already exist")
+        //             } else{
+        //                const otpToBeSent = otpfunctions.generateOTP()
+        //                const result = otpfunctions.sendOTP(req,res,email,otpToBeSent)
+        //             //    res.send("new page")
+        //             }
+        //         } else{
+        //             console.log("error is here");
+        //             req.flash('error',"invalid emailaddress")
+        //             res.redirect('/signup')
+        //         }
+        //     } else {
+        //         console.log("error is here 2");
+        //         req.flash('error',"password doesnt match")
+        //         res.redirect('/signup')
+        //         // res.send("password doesnt match")
+        //     }
+         
 
     const getemailverification = async(req,res) => {
         res.render('user/emailverification',{messages:req.flash(),user:req.session.user})
@@ -167,8 +221,12 @@ const signup = async(req,res) => {
 
     const postemailverification = async(req,res) =>{
         try{
+            // console.log(req.session.user);
             const user = await usermodel.create(req.session.user)
+            console.log(user);
+            req.session.user = user
             req.session.userAuth = true
+
             if(user) {  
             res.redirect('/home')
             }
@@ -205,8 +263,13 @@ const signup = async(req,res) => {
             const matchedemail = await usermodel.find({email:req.body.email})
             if(matchedemail) {
                 req.session.email = email
+                // req.session.user = matchedemail
                 const otpToBeSent = otpfunctions.generateOTP()
                 const result = otpfunctions.forgotOTP(req,res,email,otpToBeSent)
+            }
+            else{
+                req.flash("error","no user exist")
+                res.redirect('user/forgotpasscheck')
             }
         }catch(error) {
             console.log(error);
@@ -228,6 +291,9 @@ const signup = async(req,res) => {
             console.log(req.body);
             // console.log(email);
             const matchedotp = await OTP.findOne({email:req.session.email})
+
+            req.session.user = matchedotp
+
             console.log(matchedotp);
             const dbotp = matchedotp.otp    
             console.log(dbotp);
@@ -268,7 +334,9 @@ const signup = async(req,res) => {
            const updatepassword = await usermodel.findOneAndUpdate({email:req.session.email},{$set:{password:req.body.newpassword}})
            console.log("succesfully changed password");
            const user = await usermodel.findOne({email:req.session.email})
+           console.log(user,"here is the userr");
            req.session.user = user
+           req.session.userAuth = true
             res.redirect('/home')
             }else{
                 req.flash("error","the password doesnot match")
@@ -303,6 +371,7 @@ const getusershop = async(req,res) =>{
     console.log(req.url);
     const id = req.params.id
     const user = req.session.user
+    console.log(user,"inside getshop");
 
     try{
         const page = parseInt(req.query.page) || 1; // Get the page number from query parameters
@@ -357,7 +426,99 @@ const logout = async(req,res) => {
 }
 
 
+const getaddaddress = async(req,res) => {
+    try{
+        const user = await usermodel.findOne({_id:req.session.user._id})
+        // console.log(user);
+        if(user){
+            res.render('user/addaddress',{user:user,message:req.flash()})
+        }else{
+            console.log("user not found");
+        }
+        
+    }catch(error){
+        console.log(error);
+    }
+}
+
+const postaddaddress = async(req,res) => {
+    try{
+        // console.log(req.session.user);
+        console.log(req.body);
+        const user = await usermodel.findOneAndUpdate({_id:req.session.user._id},{$push:{Address:req.body}})
+        if(user){
+            req.flash("added","new address added succesfully")
+            res.redirect('/addaddress') 
+        }else{
+            req.flash("notFound","the user is not found")
+            res.redirect('/addaddress') 
+
+        }
+               
+    }catch(error){
+        console.log(error);
+    }
+}
+
+const posteditaddress = async(req,res) => {
+    try{
+        // console.log(req.body);
+        // console.log(req.session.user);
+        console.log(req.params.id);
+        console.log(req.body);
+         const updateduser = await usermodel.findOneAndUpdate({_id:req.session.user._id,"Address._id":req.params.id},{$set:{'Address.$':req.body}},{new:true})
+         if(updateduser){
+            req.flash("updated","address updated succesfully")
+        res.redirect('/addaddress')
+         }else{
+            req.flash("updated","address updated succesfully")
+         }
+    }catch(error){
+        console.log(error);
+    }
+}
 
 
-module.exports = {viewproduct,login,postlogin,signup,logged,getemailverification,otpAuth,postemailverification,resendotp,getforgotpassword,postforgotpassword,getforgototp,postforgototp,getforgotpasscheck,
-    postforgotpasscheck,getproduct,getusershop,logout}
+const getdeleteaddress = async(req,res) => {
+    try{
+        console.log(req.session.user);
+        console.log(req.params.id);
+        const user = await usermodel.findOneAndUpdate(
+            { _id: req.session.user._id },
+            { $pull: { Address: { _id: req.params.id } } }
+          );
+                  console.log(user);
+       
+        if(!user){
+            req.flash("deleted","user not found")
+            res.redirect('/addaddress')
+        }else if(user){
+            req.flash("deleted","address deleted succesfully")
+            res.redirect('/addaddress')
+        }else{
+            console.log("user not found");
+            res.json("404")
+        }
+    }catch(error){
+        console.log(error);
+    }
+}
+
+
+const getaddaddresscheckout = async(req,res) => {
+    try{
+        // console.log(req.body);
+        // console.log(req.session.user._id);
+        const user = await usermodel.findOneAndUpdate({_id:req.session.user._id},{$push:{Address:req.body}})
+        // console.log(user);
+        res.redirect('/checkout')
+    }catch(error){
+        console.log(error);
+    }
+}
+
+
+module.exports = {viewproduct,login,postlogin,signup,logged,getemailverification,otpAuth,postemailverification,
+    resendotp,getforgotpassword,postforgotpassword,getforgototp,postforgototp,getforgotpasscheck,
+    postforgotpasscheck,getproduct,getusershop,logout,getaddaddress,postaddaddress,posteditaddress,
+    getdeleteaddress,getaddaddresscheckout}

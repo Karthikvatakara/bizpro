@@ -50,6 +50,7 @@ module.exports = {
 
           transporter.sendMail(maildata,(error,info) => {
             if(error) {
+              console.log(email,"haiiiiiii");
                 return console.log(error);
             }
             console.log("otp sent");

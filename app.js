@@ -19,7 +19,7 @@ app.use(session({
     secret: "secret",
     resave: false,
     saveUninitialized: false, // Correct the option name
-    cookie: { maxAge: 1000 * 60 * 60 }
+    cookie: { maxAge: 1000 * 60 * 60 *60}
 }))
 
 app.use((req, res, next) => {

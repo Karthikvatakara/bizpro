@@ -1,67 +1,54 @@
-<div class="position-sticky" style="top: 80px;">
-    <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
-        <i class="fa-solid fa-bars"></i>
-    </button>
-</div>
 
-<div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel" style="background: linear-gradient(90deg, #f3ffe0, #ffcfe5);width: 250px;">
+  <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+  
+  <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="staticBackdropLabel">ADMINS OPTIONS</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      <h5 class="offcanvas-title" id="staticBackdropLabel">ADMINS OPTIONS</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body p-0">
-        <ul class="list-group custom-list">
-            <a href="/admin/dashboard" class="list-group-item custom-list-item">
-                <i class="fas fa-house me-2"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="/admin/product" class="list-group-item custom-list-item">
-                <i class="fas fa-bag-shopping me-2"></i>
-                <span>Products</span>
-            </a>
-            <a href="/admin/order" class="list-group-item custom-list-item">
-                <i class="fas fa-cart-shopping me-2"></i>
-                <span>Orders</span>
-            </a>
-            <a href="/admin/userslist" class="list-group-item custom-list-item">
-                <i class="fas fa-users me-2"></i>
-                <span>Customers</span>
-            </a>
-            <a href="/admin/coupons" class="list-group-item custom-list-item">
-                <i class="fas fa-id-card me-2"></i>
-                <span>Coupons</span>
-            </a>
-            <a href="/admin/banners" class="list-group-item custom-list-item">
-                <i class="fas fa-flag me-2"></i>
-                <span>Banners</span>
-            </a>
-            <a href="/admin/sub-admins" class="list-group-item custom-list-item">
-                <i class="fas fa-user-plus me-2"></i>
-                <span>Sub-Admins</span>
-            </a>
-            <a href="/admin/categoriesandbrands" class="list-group-item custom-list-item">
-                <i class="fas fa-list me-2"></i>
-                <span>Categories And Brands</span>
-            </a>
-            <a href="/admin/payments" class="list-group-item custom-list-item">
-                <i class="fas fa-money-bill me-2"></i>
-                <span>Payments</span>
-            </a>
-        </ul>
+    <div class="offcanvas-body p-0 ">
+      <div class="list-group vh-100 border-end icons " style="border-radius: 0; ">
+        <a href="/admin/dashboard" class="list-group-item list-group-item-action list-group-item-secondary d-flex border-0">
+          <i class="fas fa-house"></i>
+          <span class="ms-4 d-none d-lg-inline">Dashboard</span>
+        </a>
+        <a href="/admin/adminshowproduct" class="list-group-item list-group-item-action list-group-item-secondary d-flex border-0" >
+          <i class="fas fa-bag-shopping"></i>
+          <span class="ms-4 d-none d-lg-inline">Products</span>
+        </a>
+        <a href="/admin/adminorders" class="list-group-item list-group-item-action list-group-item-secondary d-flex border-0" >
+          <!-- {{!-- /admin/orders --}} -->
+          <i class="fas fa-cart-shopping"></i>
+          <span class="ms-4 d-none d-lg-inline">Orders</span>
+        </a>
+        <a href="/admin/userlist" class="list-group-item list-group-item-action list-group-item-secondary d-flex border-0" >
+          <i class="fas fa-users"></i>
+          <span class="ms-4 d-none d-lg-inline">Customers</span>
+        </a>
+        <a href="" class="list-group-item list-group-item-action list-group-item-secondary d-flex border-0 pt-2" >
+          <!-- {{!-- /admin/coupons --}} -->
+          <i class="fas fa-id-card"></i>
+          <span class="ms-4 d-none d-lg-inline">Coupons</span>
+        </a>
+        <a href="" class="list-group-item list-group-item-action list-group-item-secondary d-flex border-0 pt-2" >
+          <!-- {{!-- /admin/banners --}} -->
+          <i class="fas fa-flag"></i>
+          <span class="ms-4 d-none d-lg-inline">Banners</span>
+        </a>
+        <a href="/admin/sub-admins" class="list-group-item list-group-item-action list-group-item-secondary d-flex border-0 pt-2" >
+          <i class="fas fa-user-plus"></i>
+          <span class="ms-4 d-none d-lg-inline">Sub-Admins</span>
+        </a>
+        <a href="/admin/categoriesandbrands" class="list-group-item list-group-item-action list-group-item-secondary d-flex border-0 pt-2" >
+          <i class="fas fa-list"></i>
+          <span class="ms-4 d-none d-lg-inline">Categories And Brands</span>
+        </a>
+        <a href="/admin/payments" class="list-group-item list-group-item-action list-group-item-secondary d-flex border-0 pt-2" >
+          <i class="fas fa-money-bill"></i>
+          <span class="ms-4 d-none d-lg-inline">Payments</span>
+        </a>
+      </div>
     </div>
-</div>
-
-<style>
-    .custom-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .custom-list-item {
-        background-color: transparent; /* Remove the white background */
-        padding: 10px 15px;
-        display: flex;
-        align-items: center;
-    }
-</style>
+  </div>

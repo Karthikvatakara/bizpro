@@ -2,8 +2,10 @@ const express = require('express')
 const router = express.Router()
 const user = require('../model/usermodel')
 const userAuth = require('../middlewares/userauth')
-
+const cartcontroller = require('../controller/cartcontroller')
+const ordercontroller = require('../controller/ordercontroller')
 const usercontroller = require('../controller/usercontroller')
+const cart = require('../model/cartmodel')
 
 router.get('/home',usercontroller.viewproduct)
 
@@ -36,5 +38,31 @@ router.get('/logout',usercontroller.logout)
 
 router.get('/product/:id',userAuth.userexist,usercontroller.getproduct)
 
+router.get('/addtocart/:id',userAuth.userToken,cartcontroller.getusercart)
+
+router.get('/cart',userAuth.userToken,cartcontroller.getcartinside)
+router.post('/cart',userAuth.userToken,cartcontroller.postcart)
+
+router.get('/profilecart',cartcontroller.getprofilecart)
+
+router.post('/updateQuantity',cartcontroller.updatingquantity)
+
+router.get('/removefromcart/:id',userAuth.userToken,cartcontroller.getremovefromcart)
+
+router.get('/addaddress',userAuth.userToken,usercontroller.getaddaddress)
+router.post('/addaddress',userAuth.userToken,usercontroller.postaddaddress)
+
+router.post('/addaddress-checkout',userAuth.userToken,usercontroller.getaddaddresscheckout)
+
+router.post('/editaddress/:id',userAuth.userToken,usercontroller.posteditaddress)
+
+router.get('/deleteaddress/:id',userAuth.userToken,usercontroller.getdeleteaddress)
+
+router.get('/checkout',userAuth.userToken,cartcontroller.getcheckout)
+router.post('/checkout',userAuth.userToken,cartcontroller.postcheckout)
+
+router.get('/ordersuccess',userAuth.userToken,cartcontroller.getordersuccess)
+
+router.get('/orderhistory',ordercontroller.getuserorderhistory)
 
 module.exports = router

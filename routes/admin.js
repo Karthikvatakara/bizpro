@@ -5,6 +5,7 @@ const adminmodel = require('../model/adminmodel')
 // const usercontroller = require('../controller')
 const productcontroller = require('../controller/productcontroller')
 const admincontroller = require('../controller/admincontroller')
+const ordercontroller = require('../controller/ordercontroller')
 // const upload = multer({dest:'uploads/'})
 const adminAuth = require('../middlewares/adminauth')
 
@@ -34,11 +35,18 @@ router.get('/adminproduct/:id',adminAuth.authmiddleware,productcontroller.getadm
 router.get('/userlist',adminAuth.authmiddleware,admincontroller.getuserlist)
 router.get('/userlist/:id',adminAuth.authmiddleware,admincontroller.userblock)
 
+router.get('/adminorders',adminAuth.authmiddleware,ordercontroller.getadminorders)
+router.put('/updateorderstatus/:id',ordercontroller.putupdateorderstatus)
+router.get('/order/orderdetails/:id',ordercontroller.getorderdetails)
+
 router.get('/adminlogin',adminAuth.adminexist,admincontroller.getadminlogin)
 router.post('/adminlogin',admincontroller.postadmincheck)
 
 router.get('/deletecategory/:id',productcontroller.getdeletecategory)
 
 router.get('/adminlogout',admincontroller.adminlogout)
+
+
+
 
 module.exports = router 

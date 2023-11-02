@@ -16,6 +16,7 @@ else{
 
 const userexist = async(req,res,next) => {
     if(req.session.userAuth) {
+        console.log(req.session.user);
     const user = await usermodel.findOne({_id:req.session.user._id})
     if(user.Status =='Blocked') {
         req.session.user = null;
@@ -32,4 +33,12 @@ const userexist = async(req,res,next) => {
 }
 }
 
-module.exports = {authmiddleware,userexist}
+const userToken = async(req,res,next) => {
+    if(req.session.userAuth && req.session.user) {
+        next()
+    }else{
+        res.redirect('/login')
+    }
+}
+
+module.exports = {authmiddleware,userexist,userToken}

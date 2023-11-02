@@ -1,0 +1,396 @@
+<%- include('../user/layouts/header')%>
+<%- include('../user/partials/userheader')%>
+<%- include('../user/partials/usercanvas') %>
+
+<div
+  class="modal fade"
+  id="addAddressModal"
+  tabindex="-1"
+  aria-labelledby="addAddressModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addAddressModalLabel">Add Address</h5>
+        <button
+        type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form action="/addaddress-checkout" method="post">
+          <div class="mb-3">
+            <label for="fullName" class="form-label">Full Name</label>
+            <input
+              type="text"
+              class="form-control"
+              name="Name"
+              id="fullName"
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <input
+              type="text"
+              class="form-control"
+              name="AddressLane"
+              id="address"
+              placeholder="Enter your address"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="city" class="form-label">City</label>
+            <input
+              type="text"
+              class="form-control"
+              id="city"
+              name="City"
+              placeholder="Enter your city"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="pincode" class="form-label">Pincode</label>
+            <input
+              type="text"
+              class="form-control"
+              id="pincode"
+              name="Pincode"
+              placeholder="Enter your pincode"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="state" class="form-label">State</label>
+            <input
+              type="text"
+              class="form-control"
+              id="state"
+              name="State"
+              placeholder="Enter your state"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="mobileNumber" class="form-label">Mobile Number</label>
+            <input
+              type="tel"
+              class="form-control"
+              id="mobileNumber"
+              name="Mobile"
+              placeholder="Enter your mobile number"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<form id="orderForm" action="/checkout" method="post">
+    <div class="container custom-container main ">
+      <div class="row">
+        <!-- Left Column - Col-7 -->
+          <div class="col-md-7">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Saved Addresses</h5>
+    
+                <%user.Address.forEach(function(Address) { %>
+       
+                <div class="address-card row">
+                  <div class="col-1">
+                    <input
+                      type="radio"
+                      name="AddressId"
+                      value="<%=Address._id%>"
+                      id="address1"
+                      checked
+                    />
+                  </div>
+                  <div class="col-4">
+                    <div class="address-line">Name:</div>
+                    <div class="address-line">Address:</div>
+                    <div class="address-line">City:</div>
+                    <div class="address-line">Pincode:</div>
+                    <div class="address-line">State:</div>
+                    <div class="address-line">Mobile Number:</div>
+                  </div>
+                  <div class="col-7">
+                    <div class="address-value"><%=Address.Name%></div>
+                    <div class="address-value"><%=Address.AddressLane%></div>
+                    <div class="address-value"><%=Address.City%></div>
+                    <div class="address-value"><%=Address.Pincode%></div>
+                    <div class="address-value"><%=Address.State%></div>
+                    <div class="address-value"><%=Address.Mobile%></div>
+                  </div>
+                  <div class="col-1">
+      
+                </div>
+                </div>
+                <%})%>
+                <a
+                  class="btn btn-dark"
+                  style="background-color: black;"
+                  data-bs-toggle="modal"
+                  data-bs-target="#addAddressModal"
+                >
+                <i class="fas fa-plus-circle"></i> Add Address
+              </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Right Column - Col-5 -->
+          <div class="col-md-5">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Payment Methods</h5>
+    
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="paymentMethod"
+                    id="cod"
+                    value="cod"
+                    checked
+                  />
+                  <label class="form-check-label" for="cod">
+                    Cash on Delivery (COD)
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="paymentMethod"
+                    id="online"
+                    value="online"
+                  />
+                  <label class="form-check-label" for="online">
+                    Online Payment
+                  </label>
+                </div>
+                <div class="justify-content-center">
+                  <button class="btn btn-success mt-4" id="confirmOrderButton">
+                    Confirm Order
+                  </button>
+                  <a href="/usershop"><button class="btn btn-secondary mt-4" type="button">Back to Shop</button></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+<style>
+  .address-card {
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+
+  .address-line {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .address-value {
+    margin-bottom: 10px;
+  }
+
+  .card {
+    border-radius: 15px;
+    border: 1px solid #dee2e6;
+    margin-bottom: 20px;
+  }
+  /* body {
+    background-color: rgb(36, 47, 69);
+  } */
+  .card-title {
+    color: #007bff;
+  }
+  .main {
+    margin-top: 10vh;
+  }
+  .address-card {
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+
+  .address-line {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .address-value {
+    margin-bottom: 10px;
+  }
+
+  .card {
+    border-radius: 15px;
+    border: 1px solid #dee2e6;
+    margin-bottom: 20px;
+  }
+
+  .card-title {
+    color: #007bff;
+  }
+
+  .confirm-order-btn {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  .address-card {
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+
+  .address-line {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .address-value {
+    margin-bottom: 10px;
+  }
+
+  .card {
+    border-radius: 15px;
+    border: 1px solid #dee2e6;
+    margin-bottom: 20px;
+  }
+
+  .card-title {
+    color: #007bff;
+  }
+
+  /* .back-to-shop-btn {
+    background-color: #58718c;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  } */ 
+
+  .address-card,
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Adding box shadow */
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background: #fff; /* Setting a white background */
+  }
+
+  .main {
+    margin-top: 20px;
+  }
+
+  .container {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f5f5f5;
+  }
+</style>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script>
+  $("#form-checkout").submit((e) => {
+    e.preventDefault()
+    $.ajax({
+      url:'/checkout',
+      method: 'post',
+      data: $('#form-checkout').serialize(),
+      success: (response) => {
+        if (response.codSuccess) {
+          window.location = '/orderSuccess'
+          console.log('response got')
+        } else {
+          console.log('going to initial')
+          console.log(response.createdOrder)
+          console.log(response.order)
+          handlePayNowClick(response)
+        }
+      }
+    })
+  })
+  function handlePayNowClick (order) {
+    console.log(order)
+    var options = {
+    "key": "rzp_test_2kq1q9uS7VLUsv",
+    "amount": order.createdOrder.amount, 
+    "currency": "INR",
+    "name": "TICKER",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": order.createdOrder.id, 
+    "handler": function (response){
+      console.log(response)
+        verifyPayment(response, order)
+    },
+    "prefill": {
+        "user": order.order.UserId,
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+  };
+  var rzp1 = new Razorpay(options);
+  rzp1.open();
+  }
+
+  function verifyPayment (payment, order) {
+    console.log('now in verifyPayment')
+    $.ajax({
+      url: '/verify-payment',
+      data: {
+        payment,
+        order
+      },
+      method: 'post',
+      success: (response) => {
+        if (response.success) {
+          console.log('response got')
+          location.href = '/orderSuccess'
+        }else{
+          console.log('response not get');
+          location.href = '*'
+        }
+      }
+    })
+  }
+</script>
+
+<%- include('../user/layouts/footer') %>

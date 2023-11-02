@@ -74,7 +74,17 @@
 </head>
 <body>
   
-  <%- include('./partials/userheader')%>
+  <header>
+    <nav class="navbar bg-body-tertiary p-0">
+      <div class="container-fluid d-flex justify-content-between align-items-middle" style="background-color: #f8eded;">
+          <div class="align-self-start"> <!-- Align the image to the left -->
+              <a class="navbar-brand" href="/homepage">
+                  <img src="/images/screenshot--272-removebgpreview-1@2x.png" style="max-height: 70px;" alt="">
+              </a>
+          </div>
+      </div>
+    </nav>
+    </header>
   <section id="signupCard" class="vh-100">
     <div class="container" >
       <div class="row justify-content-center">
@@ -153,7 +163,7 @@
                           id="showPasswordTwo"
                           onclick="togglePassword('confirmPasswordInput')"
                         >
-                          <i class="fas fa-eye"></i>
+                          <div class="border "><i class="fas fa-eye "></i></div>
                         </button>
                       </div>
                     </div>

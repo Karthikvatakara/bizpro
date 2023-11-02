@@ -1,0 +1,136 @@
+<%- include('../admin/layouts/header')%>
+<%- include('../admin/partials/adminheader')%>
+<style>
+  .container {
+      box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2); /* Add more shadow to the container */
+  }
+</style>
+
+  <div class="header d-flex justify-content-center" style="margin-top: 10px;">
+    <h1 >Order List</h1>
+    </div>
+
+
+    <div class="container">
+          <% if(order.length> 0) { %> 
+            <table class="table table-bordered table-striped table-hover mt-3">
+              <thead class="table-dark">
+                <tr>
+                  <th scope="col">Sr No</th>
+                  <th scope="col">Order ID</th>
+                  <th scope="col">Customer ID</th>
+                  <th scope="col">Ordered Date</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Payment Method</th>
+                  <th scope="col">Payment Status</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">Actions</th> <!-- Added column for actions -->
+                </tr>
+              </thead>
+
+            <tbody>
+              <% for(let i=0; i< order.length; i++) { %>
+                <tr>
+                  <td><%= i+1 %></td>
+                  <td><%= order[i]._id %></td>
+                  <td><%= order[i].userId %></td>
+                  <td><%= order[i].OrderDate %> </td>
+                  
+                  <td>
+                    <!-- Displaying the current status dynamically -->
+                    <% if (order[i].Status !== 'Cancelled') { %>
+                        <% const currentStatus = order[i].Status || 'Order Placed'; %>
+                        <select class="form-select" id="statusSelect<%= i %>"
+                          onchange="changeOrderStatus('<%= order[i]._id %>','<%=i %>' )">
+                          <option value="Order Placed" <%= currentStatus === 'Order Placed' ? 'selected' : '' %>>Order Placed</option>
+                          <option value="Shipped" <%= currentStatus === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                          <option value="Delivered" <%= currentStatus === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                          <option value="Rejected" <%= currentStatus === 'Rejected' ? 'selected' : '' %>>Rejected</option>
+                        </select>
+                      <% } else { %>
+                        Cancelled
+                      <% } %>
+                  </td>
+
+                  <td><%= order[i].PaymentMethod %> </td>
+                  <td id="paymentStatusCell<%=i %>"><%= order[i].PaymentStatus %> </td>
+                  <td><%= order[i].TotalPrice %> </td>
+                  <td>
+                    <a href="/admin/order/orderdetails/<%= order[i]._id %>" class="btn btn-primary btn-sm">
+                      View Details
+                    </a>
+                  </td>
+                </tr>
+                <%}%>
+              
+            </tbody>
+        </table>
+        <% } else{ %>
+          <div class="card text-center">
+            <div class="card-body">
+              <h5 class="card-title">No Orders Yet</h5>
+              <p class="card-text">There are currently no orders available.</p>
+            </div>
+          </div>
+          <% } %>
+
+          <!-- //pagination -->
+          <% if (order.length > 0) { %>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <p>Showing <%= (currentPage - 1) * perPage + 1 %>-
+                  <% if(currentPage === totalPages){%>
+                    <%=totalCount%>
+                    <%}else{%>
+                  <%= currentPage * perPage  %>
+                  <%}%>
+                   results from <%= totalCount %></p>
+                <ul class="pagination">
+                  <% for (let i = 1; i <= totalPages; i++) { %>
+                    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                      <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                    </li>
+                  <% } %>
+                </ul>
+              </div>
+              <% } else { %>
+                <p>No results found.</p>
+              <% } %>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      function changeOrderStatus(orderId,index){
+        console.log("hai");
+        const statusSelect = document.getElementById(`statusSelect${index}`)
+        const newStatus = statusSelect.value
+
+       fetch(`/admin/updateorderstatus/${orderId}`,{
+        method:'PUT',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify({status:newStatus})
+       })
+       .then(response => {
+        if(!response.ok) {
+          throw new Error("response not ok");
+        }
+        return response.json()
+       })
+       .then(data =>{
+        console.log(data,"received from controller");
+        // console.log(data.neworder.PaymentStatus);
+         const paymentStatusCell = document.getElementById(`paymentStatusCell${index}`)
+        paymentStatusCell.textContent = data.neworder.PaymentStatus
+       })
+       
+      .catch(error =>{
+        console.error("Error:",error);
+      })
+      }
+    </script>
+</body>
+</html>
+
+
+

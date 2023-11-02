@@ -2,7 +2,6 @@
 <%- include('../admin/partials/adminheader')%>
 
 
-<!-- <%- include('../admin/partials/admincanvas')%> -->
 <div class="container-fluid"  >
     <div class="row  border-start">
         <main class="px-md-4 icons">
@@ -79,12 +78,12 @@
                                 <input
                                   type="file"
                                   name="image1"
-                                  value="<%= product.imageUrl[0] %>"
+                   
                                   class="form-control-file"
                                   id="image1"
                                   accept="image/*"
                                 />
-                                <img src="/uploads/<%= product.imageUrl[0] %>" alt="Image 1" class="img-fluid" style="max-height: 200px;">
+                                <img src="/uploads/<%= product.imageUrl[0] %>" alt="Image 1" class="img-fluid" id="uploadedImage1" style="max-height: 200px;">
                               </div>
                               <div class="form-group text-center">
                                 <label for="image2">Image 2:</label>
@@ -96,7 +95,7 @@
                                   id="image2"
                                   accept="image/*"
                                 />
-                                <img src="/uploads/<%= product.imageUrl[1] %>" alt="Image 2" class="img-fluid" style="max-height: 200px;">
+                                <img src="/uploads/<%= product.imageUrl[1] %>" alt="Image 2" class="img-fluid" id="uploadedImage2" style="max-height: 200px;">
                               </div>
                               <div class="form-group text-center">
                                 <label for="image3">Image 3:</label>
@@ -108,32 +107,9 @@
                                   id="image3"
                                   accept="image/*"
                                 />
-                                <img src="/uploads/<%= product.imageUrl[2] %>" alt="Image 3" class="img-fluid" style="max-height: 200px;">
+                                <img src="/uploads/<%= product.imageUrl[2] %>" alt="Image 3" class="img-fluid" id="uploadedImage3" style="max-height: 200px;">
                               </div>
                             </div>
-
-                            <!-- uploaded images -->
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="uploaded-image">
-                                        <img src="/uploads/<%=product.imageUrl[0]%>" alt="Uploaded Image 1" id="uploadedImage1" class="img-fluid" data-index="1">
-                                        <button onclick="return confirm('Are you sure you want to delete the image')" class="btn btn-danger btn-sm delete-image"  data-index="1">Delete</button>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="uploaded-image">
-                                        <img src="/uploads/<%=product.imageUrl[1]%>" alt="Uploaded Image 2" id="uploadedImage2" class="img-fluid" data-index="2">
-                                        <button onclick="return confirm('Are you sure you want to delete the image')" class="btn btn-danger btn-sm delete-image"  data-index="2">Delete</button>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="uploaded-image">
-                                        <img src="/uploads/<%=product.imageUrl[2]%>" alt="Uploaded Image 3" id="uploadedImage3" class="img-fluid" data-index="3">
-                                        <button onclick="return confirm('Are you sure you want to delete the image')" class="btn btn-danger btn-sm delete-image"  data-index="3">Delete</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
 
                         <div class="border p-3 mb-3">
@@ -185,7 +161,7 @@
                                     Add more options as needed -->
                                 <!-- </select>
                             </div>
-                        </div> --> -->
+                        </div> --> 
 
 
 

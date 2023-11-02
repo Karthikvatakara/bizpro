@@ -1,0 +1,96 @@
+<%- include('../admin/layouts/header')%>
+<link rel="stylesheet" href="/stylesheet/orderDetials.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+<%- include('../admin/partials/adminheader')%>
+
+<style>
+    .fixed-image {
+        width: 250px;
+        height: 250px;
+        object-fit: fill;
+    }
+
+    .progress-bar.order-placed {
+        background-color: #007bff;
+    }
+
+    .progress-bar.shipped {
+        background-color: #ffc107;
+    }
+
+    .progress-bar.delivered {
+        background-color: #28a745;
+    }
+
+    .progress-bar.rejected {
+        background-color: #dc3545;
+    }
+</style>
+<div class="header" style="margin-top: 80px;">
+    <h1>Order Details</h1>
+  </div>
+<div class="container-fluid gradient-custom-2">
+    <div class="row justify-content-center align-items-center h-100">
+        <% if(order && order.products.length > 0){ %>
+            <% order.products.forEach((product, index)=> { %>
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
+                    <div class="card" style="border-radius: 16px;">
+                        <div class="card-body">
+                            <h5 class="card-title">Order ID: <%= order._id %></h5>
+                            <p class="card-text">Placed On: <%= order.OrderDate %></p>
+                            <div class="align-items-center">
+                            <img src="/uploads/<%=product.productId.imageUrl[0]%>"
+                                class="card-img-top fixed-image img-fluid pl-3 ml-5" alt="Product Image">
+                            </div>    
+                            <h6 class="card-subtitle mb-2 text-muted"><%= product.productId.ProductName %></h6>
+                            <p class="card-text">Quantity: <%= product.Quantity %></p>
+                            <p class="card-text">Price per Item: ₹ <%= product.productId.Price %> /-</p>
+                            <p class="card-text">Price Total: ₹ <%= product.productId.Price*order.products.Quantity %> /-</p>
+                            <p class="card-text">Via: <%= order.PaymentMethod %></p>
+                            <p class="card-text">Status: <%= order.Status %></p>
+                            <h5 class="card-text">Address</h5>
+                            <p class="card-text">Name :<%=order.Address.Name %></p>
+                            <p class="card-text">HouseName :<%=order.Address.AddressLane %></p>
+                            <p class="card-text">city :<%=order.Address.City %></p>
+                            <p class="card-text">State :<%=order.Address.State %></p>
+                            <p class="card-text">pincode :<%=order.Address.Pincode %></p>
+                            <p class="card-text">Mobile :<%=order.Address.Mobile %></p>
+
+                            <div class="progress">
+                                <div class="progress-bar
+                                    <% if (order.Status.toLowerCase() === 'order placed') { %> order-placed <% } %>
+                                    <% if (order.Status.toLowerCase() === 'shipped') { %> shipped <% } %>
+                                    <% if (order.Status.toLowerCase() === 'delivered') { %> delivered <% } %>
+                                    <% if (order.Status.toLowerCase() === 'rejected' || order.Status.toLowerCase() === 'canceled') { %> rejected <% } %>"
+                                    role="progressbar" aria-valuenow="<%=
+                                    order.Status.toLowerCase() === 'order placed' ? 10 :  /* 10% for " order placed" */
+                                    order.Status.toLowerCase() === 'shipped' ? 50 :
+                                    order.Status.toLowerCase() === 'rejected' ? 100 : 0 %>"
+                                    aria-valuemin="0" aria-valuemax="100" style="width: <%= order.Status.toLowerCase() === 'order placed' ? 10 :
+                                    order.Status.toLowerCase() === 'shipped' ? 50 :
+                                    order.Status.toLowerCase() === 'delivered' ? 100 :
+                                    order.Status.toLowerCase() === 'rejected' ? 100 : 0 %>%;">
+                                    <%= order.Status.toLowerCase() === 'order placed' ? '10%' :
+                                    order.Status.toLowerCase() === 'shipped' ? '50%' :
+                                    order.Status.toLowerCase() === 'delivered' ? '100%' :
+                                    order.Status.toLowerCase() === 'rejected' ? '0%' : '' %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } %>
+
+        <!-- <div class="card bg-light mb-3" style="max-width: 18rem;">
+            <div class="card-header">Header</div>
+            <div class="card-body">
+              <h5 class="card-title">Light card title</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div> -->
+
+    </div>
+</div>
+
+<%- include('../admin/layouts/footer') %>

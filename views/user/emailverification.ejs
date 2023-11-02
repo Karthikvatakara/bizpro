@@ -11,8 +11,17 @@
 </head>
 <body>
    
-    <%- include("./partials/userheader") %>
-
+  <header>
+    <nav class="navbar bg-body-tertiary p-0">
+      <div class="container-fluid d-flex justify-content-between align-items-middle" style="background-color: #f8eded;">
+          <div class="align-self-start"> <!-- Align the image to the left -->
+              <a class="navbar-brand" href="/homepage">
+                  <img src="/images/screenshot--272-removebgpreview-1@2x.png" style="max-height: 70px;" alt="">
+              </a>
+          </div>
+      </div>
+    </nav>
+    </header>
       <section>
         <main class="main">
             <div class="container">
@@ -40,9 +49,11 @@
                   <span class="striped-line"></span>
                   <span class="striped-line"></span>
                 </div>
-               
+               <div>
+                <p id="timer"></p>
+               </div>
 
-                  <div class="text-center">
+                  <div class="text-center" id="resendOtp" style="display:none">
                     <a href="/resendotp">Resend Code</a>
                 </div>
 
@@ -55,5 +66,33 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/css/ionicons-core.min.css" integrity="sha512-OmevVDECSDeo7M4G+Nvh0+VLVGS2XnEOkXWJcJ0TRom3GpGgc/ryQIgpRZw20mb5eR2U0sqsm33MaR8yD1zdsQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      let duration = 30; // Duration in seconds
+  const timerDisplay = $("#timer");
+  const resendOtp = $("#resendOtp");
+
+  function updateTimer() {
+    const minutes = Math.floor(duration / 60);
+    let seconds = duration % 60;
+    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+    timerDisplay.text(`${minutes}:${seconds}`);
+
+    if (duration === 0) {
+      clearInterval(countdown);
+      timerDisplay.text("00:00");
+      resendOtp.css("display", "block");
+    } else {
+      duration--;
+    }
+  }
+
+  // Initial call to display the full minute
+  updateTimer();
+
+  // Set up the countdown
+  const countdown = setInterval(updateTimer, 1000);
+    </script>
 </body>
 </html>

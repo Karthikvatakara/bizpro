@@ -24,63 +24,10 @@
 <body>
     
     <header>
-        <!-- Jumbotron -->
-        <!-- <div class="p-3 text-center bg-white border-bottom">
-          <div class="container">
-            <div class="row gy-3"> -->
-              <!-- Left elements -->
-              <!-- <div class="col-lg-2 col-sm-4 col-4">
-                <a href="https://mdbootstrap.com/" target="_blank" class="float-start">
-                  <img src="https://mdbootstrap.com/img/logo/mdb-transaprent-noshadows.png" height="35" />
-                </a>
-              </div> -->
-              <!-- Left elements -->
-      
-              <!-- Center elements -->
-              <!-- <div class="order-lg-last col-lg-5 col-sm-8 col-8">
-                <div class="d-flex float-end">
-                  <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-user-alt m-1 me-md-2"></i><p class="d-none d-md-block mb-0">Sign in</p> </a>
-                  <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-heart m-1 me-md-2"></i><p class="d-none d-md-block mb-0">Wishlist</p> </a>
-                  <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="border rounded py-1 px-3 nav-link d-flex align-items-center" target="_blank"> <i class="fas fa-shopping-cart m-1 me-md-2"></i><p class="d-none d-md-block mb-0">My cart</p> </a>
-                </div>
-              </div> -->
-              <!-- Center elements -->
-      
-              <!-- Right elements -->
-              <!-- <div class="col-lg-5 col-md-12 col-12">
-                <div class="input-group float-center">
-                  <div class="form-outline">
-                    <input type="search" id="form1" class="form-control" />
-                    <label class="form-label" for="form1">Search</label>
-                  </div>
-                  <button type="button" class="btn btn-primary shadow-0">
-                    <i class="fas fa-search"></i>
-                  </button>
-                </div>
-              </div> -->
-              <!-- Right elements -->
-            <!-- </div>
-          </div>
-        </div> -->
-        <!-- Jumbotron -->
+       
         <%- include('./partials/userheader')%>
-        <!-- Heading -->
-        <!-- <div class="bg-primary">
-          <div class="container py-4"> -->
-            <!-- Breadcrumb -->
-            <nav class="d-flex">
-              <h6 class="mb-0">
-                <a href="" class="text-white-50">Home</a>
-                <span class="text-white-50 mx-2"> > </span>
-                <a href="" class="text-white-50">Library</a>
-                <span class="text-white-50 mx-2"> > </span>
-                <a href="" class="text-white"><u>Data</u></a>
-              </h6>
-            </nav>
-            <!-- Breadcrumb -->
-          </div>
-        </div>
-        <!-- Heading -->
+    
+       
       </header>
       
       <!-- content -->
@@ -132,8 +79,8 @@
                 </div>
       
                 <p><%= product.Description %></p>
-      
-                <!-- <div class="row">
+<!--       
+                 <div class="row">
                   <dt class="col-3">Type:</dt>
                   <dd class="col-9">Regular</dd>
       
@@ -145,21 +92,14 @@
       
                   <dt class="col-3">Brand</dt>
                   <dd class="col-9">Reebook</dd>
-                </div> -->
+                </div>  -->
       
                 <hr />
       
-                <div class="row mb-4">
-                  <div class="col-md-4 col-6">
-                    <label class="mb-2">Size</label>
-                    <select class="form-select border border-secondary" style="height: 35px;">
-                      <option>Small</option>
-                      <option>Medium</option>
-                      <option>Large</option>
-                    </select>
-                  </div>
+                 <div class="row mb-4"> 
+                
                   <!-- col.// -->
-                  <div class="col-md-4 col-6 mb-3">
+                  <!-- <div class="col-md-4 col-6 mb-3">
                     <label class="mb-2 d-block">Quantity</label>
                     <div class="input-group mb-3" style="width: 170px;">
                       <button class="btn btn-white border border-secondary px-3" type="button" id="button-addon1" data-mdb-ripple-color="dark">
@@ -170,12 +110,11 @@
                         <i class="fas fa-plus"></i>
                       </button>
                     </div>
-                  </div>
-                </div>
-                <a href="#" class="btn btn-warning shadow-0"> Buy now </a>
-                <a href="#" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart </a>
+                  </div> -->
+                 </div>
+                <a href="/addtocart/<%= product._id %>" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart </a>
                 <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i class="me-1 fa fa-heart fa-lg"></i> Save </a>
-              </div>
+              </div> 
             </main>
           </div>
         </div>
@@ -194,7 +133,7 @@
                   <li class="nav-item d-flex" role="presentation">
                     <a class="nav-link d-flex align-items-center justify-content-center w-100 active" id="ex1-tab-1" data-mdb-toggle="pill" href="#ex1-pills-1" role="tab" aria-controls="ex1-pills-1" aria-selected="true">Specification</a>
                   </li>
-                  <li class="nav-item d-flex" role="presentation">
+                  <!-- <li class="nav-item d-flex" role="presentation">
                     <a class="nav-link d-flex align-items-center justify-content-center w-100" id="ex1-tab-2" data-mdb-toggle="pill" href="#ex1-pills-2" role="tab" aria-controls="ex1-pills-2" aria-selected="false">Warranty info</a>
                   </li>
                   <li class="nav-item d-flex" role="presentation">
@@ -202,7 +141,7 @@
                   </li>
                   <li class="nav-item d-flex" role="presentation">
                     <a class="nav-link d-flex align-items-center justify-content-center w-100" id="ex1-tab-4" data-mdb-toggle="pill" href="#ex1-pills-4" role="tab" aria-controls="ex1-pills-4" aria-selected="false">Seller profile</a>
-                  </li>
+                  </li> -->
                 </ul>
                 <!-- Pills navs -->
       
@@ -441,7 +380,7 @@
               <div class="col-12 col-lg-3 col-sm-12 mb-2">
                 <!-- Content -->
                 <a href="https://mdbootstrap.com/" target="_blank" class="text-white h2">
-                  MDB
+                  Sport gear
                 </a>
                 <p class="mt-1 text-white">
                   © 2023 Copyright: MDBootstrap.com

@@ -6,6 +6,7 @@ const moment = require('moment')
 const usermodel = require('../model/usermodel')
 const adminModel = require('../model/adminmodel')
 const bcrypt = require('bcrypt')
+const ordermodel = require('../model/ordermodel')
 
 
 const getuserlist = async(req,res) => {
@@ -101,6 +102,8 @@ const adminlogout = async(req,res) => {
         console.log(error);
     }
 }
+
+
 
 
 

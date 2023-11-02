@@ -88,7 +88,7 @@ const geteditcategory = async(req,res) => {
     try{
         
         // res.render('admin/editcategory')
-        console.log(req.params.id);
+        // console.log(req.params.id);
         const category = await categoryModel.findOne({_id:req.params.id})
         console.log(category);
         res.render('admin/editcategory',{category})
@@ -99,19 +99,24 @@ const geteditcategory = async(req,res) => {
 
 const posteditcategory = async(req,res) => {
     try{
-        console.log(req.params.id);
+        // console.log(req.params.id);
         // console.log(req.body);
         // console.log(req.file.filename);
 
         if(req.file) {
             const newname = req.body.name
-            
+            const imageUrl = req.file.filename
+            console.log(imageUrl);
             const category = await categoryModel.findOneAndUpdate({_id:req.params.id},{$set:{name:newname,imageUrl:imageUrl}},{new:true})
             console.log("test");
+            console.log(category);
             res.redirect('/admin/categoriesandbrands')
         }
         else{
             const newname = req.body.name
+            const cat = await categoryModel.find({_id:req.params.id})
+            const imageUrl = cat.imageUrl
+            console.log(imageUrl);
             const category = await categoryModel.findOneAndUpdate({_id:req.params.id},{$set:{name:newname}})
             console.log(category);
             res.redirect('/admin/categoriesandbrands')
@@ -247,7 +252,7 @@ console.log('Products:', product);
   
 const posteditproduct = async (req, res) => {
     try {
-        
+        if(req.files.image1 && req.files.image2 && req.files.image3){
         const category = await categoryModel.findOne({name:req.body.Category})
         const brand = await brandModel.find({name:req.body.BrandName})
         // console.log(category)
@@ -278,6 +283,21 @@ const posteditproduct = async (req, res) => {
 
 
         res.redirect('/admin/adminshowproduct')
+        }
+        else {
+            const category = await categoryModel.findOne({name:req.body.Category})
+            const brand = await brandModel.findOne({name:req.body.BrandName})
+            const product = await productModel.findOne({_id:req.params.id})
+            console.log(product,'dfghj')
+            const imageUrl = product.imageUrl
+            console.log("karthuu");
+            // req.body.imageUrl = imageUrl
+            const categoryId = category._id
+            const brandId = brand._id
+            const Product = await productModel.findOneAndUpdate({_id:req.params.id},{...req.body,category:categoryId,BrandName:brandId,imageUrl:imageUrl},{new:true})
+            res.redirect('/admin/adminshowproduct')
+        }
+        
     } catch (error) {
         console.log(error);
         res.status(500).send("Internal Server Error");
@@ -313,10 +333,13 @@ const getdeletecategory = async(req,res) =>{
         const category = await categoryModel.findById(req.params.id)
        if(category.Status ==='Active') {
         const category = await categoryModel.findByIdAndUpdate({_id:req.params.id},{Status:'Blocked'})
-        // const product = await productModel.updateMany({category:categoryIdObjectId},{Display:'Inactive'})
+       
+        const product = await productModel.updateMany({category:req.params.id},{Display:'Inactive'})
+    
        }else if(category.Status === 'Blocked') {
         const category = await categoryModel.findByIdAndUpdate({_id:req.params.id},{Status:'Active'})
-        // const product = await productModel.updateMany({category:categoryIdObjectId},{Display:'Active'})
+        
+        const product = await productModel.updateMany({category:req.params.id},{Display:'Active'})
        }
        console.log(category.Status);
        res.redirect('/admin/categoriesandbrands')

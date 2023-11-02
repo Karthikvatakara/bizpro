@@ -38,7 +38,7 @@
               <td><%= product.AvailableQuantity %></td>
               <td><%= product.Price %></td>
               <td><%= product.DiscountAmount %></td>
-              <td><%= product.Status %></td>
+              <td><%= product.Display %></td>
               <td><%= product.UpdatedOn %></td>
               <td>
                 <a href="/admin/editproduct/<%=product._id%>">
@@ -48,11 +48,11 @@
               <td>
                 <% if (product.Display === 'Active') { %>
                 <a href="/admin/adminproduct/<%=product._id%>">
-                  <button  onclick="return confirm('are you sure to block??')" class="btn btn-success">Block</button>
+                  <button  onclick="return confirm('are you sure to block??')" class="btn btn-danger">Block</button>
                 </a>
                 <% } else if (product.Display === 'Inactive') { %>
                 <a href="/admin/adminproduct/<%=product._id%>">
-                  <button onclick="return confirm('Are you sure. You are going to unblock the user')" class="btn btn-danger">Unblock</button>
+                  <button onclick="return confirm('Are you sure. You are going to unblock the user')" class="btn btn-success">Unblock</button>
                 </a>
                 <% } %>
               </td>
