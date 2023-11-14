@@ -38,6 +38,8 @@ router.get('/userlist/:id',adminAuth.authmiddleware,admincontroller.userblock)
 router.get('/adminorders',adminAuth.authmiddleware,ordercontroller.getadminorders)
 router.put('/updateorderstatus/:id',ordercontroller.putupdateorderstatus)
 router.get('/order/orderdetails/:id',ordercontroller.getorderdetails)
+router.get('/orders/return-request',ordercontroller.getreturnrequest)
+router.post('/order/returnRequestHandle',ordercontroller.postReturnRequestHandle)
 
 router.get('/adminlogin',adminAuth.adminexist,admincontroller.getadminlogin)
 router.post('/adminlogin',admincontroller.postadmincheck)

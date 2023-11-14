@@ -116,7 +116,11 @@
                     >
                       Remove</a
                     >
-                    <!-- <div><p style="color: red;"><%= messages.error %></p></div> -->
+                    <div><p style="color: red;"><%= messages.error %></p></div>
+                    <div>
+                      <% if(cartItem.productId.AvailableQuantity === 0){ %>
+                        <p style="color: red;"><%= messages.err %></p></div>
+                        <% } %>
                   </div>
                 </div>
               </div>

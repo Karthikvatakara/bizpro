@@ -10,6 +10,17 @@
     <h1 >Order List</h1>
     </div>
 
+    <div class="text-end me-2 mb-2">
+      <a href="/admin/orders/return-request">
+        <button type="submit" class="btn btn-outline-danger" style="border-radius: 10px;">
+          Return requests 
+          <% if (numberOfReturnRequest > 0) { %>
+            <span class="badge bg-secondary"><%= numberOfReturnRequest %></span>
+    
+          <% } %>
+        </button>
+      </a>
+    </div>
 
     <div class="container">
           <% if(order.length> 0) { %> 
@@ -39,6 +50,9 @@
                   <td>
                     <!-- Displaying the current status dynamically -->
                     <% if (order[i].Status !== 'Cancelled') { %>
+                      <% if(order[i].Status !== 'return requested') { %>
+                        <% if(order[i].Status !=='returned') {%>
+                          <% if(order[i].Status !=='Delivered') { %>
                         <% const currentStatus = order[i].Status || 'Order Placed'; %>
                         <select class="form-select" id="statusSelect<%= i %>"
                           onchange="changeOrderStatus('<%= order[i]._id %>','<%=i %>' )">
@@ -47,6 +61,15 @@
                           <option value="Delivered" <%= currentStatus === 'Delivered' ? 'selected' : '' %>>Delivered</option>
                           <option value="Rejected" <%= currentStatus === 'Rejected' ? 'selected' : '' %>>Rejected</option>
                         </select>
+                        <% } else{%>
+                          Delivered
+                        <% } %>
+                        <% } else {%>
+                          returned
+                        <% } %>
+                        <% }else {%>
+                          return requested
+                         <% } %>
                       <% } else { %>
                         Cancelled
                       <% } %>

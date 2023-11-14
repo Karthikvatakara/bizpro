@@ -41,6 +41,7 @@ router.get('/product/:id',userAuth.userexist,usercontroller.getproduct)
 router.get('/addtocart/:id',userAuth.userToken,cartcontroller.getusercart)
 
 router.get('/cart',userAuth.userToken,cartcontroller.getcartinside)
+router.get('/cartForSafeer',userAuth.userToken,cartcontroller.getcartinsideForSafeer)
 router.post('/cart',userAuth.userToken,cartcontroller.postcart)
 
 router.get('/profilecart',cartcontroller.getprofilecart)
@@ -64,5 +65,15 @@ router.post('/checkout',userAuth.userToken,cartcontroller.postcheckout)
 router.get('/ordersuccess',userAuth.userToken,cartcontroller.getordersuccess)
 
 router.get('/orderhistory',ordercontroller.getuserorderhistory)
+router.get('/order/orderdetails/:id',ordercontroller.getuserorderdetails)
+
+router.get('/trackorder',ordercontroller.getUserTrackOrderDetails)
+
+router.get('/order/cancel/:id',ordercontroller.getuserordercancel)
+
+router.post('/verify-payment',cartcontroller.postverifypayment)
+
+router.post('/order/return/:id',ordercontroller.postorderreturn)
+
 
 module.exports = router

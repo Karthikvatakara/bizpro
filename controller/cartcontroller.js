@@ -7,6 +7,11 @@ const usermodel = require('../model/usermodel')
 const ordermodel = require('../model/ordermodel')
 const moment  = require('moment')
 const nodemailer = require('nodemailer')
+const Razorpay = require('../validator/razorpay')
+const razorpay = require('razorpay')
+const crypto = require('crypto')
+const mongoose = require("mongoose");
+
 
 const getusercart = async(req,res)=> {
     try{
@@ -91,12 +96,24 @@ const updatingquantity = async (req, res) => {
 
   const getcartinside = async(req,res) => {
     try{
+        const error = req?.query?.error;
+        const message = req?.query?.message;
+        if(error){
+          req.flash('error', message);
+        }
         const cart = await cartModel.findOne({userId:req.session.user._id}).populate('products.productId')
-        // console.log(req.session.user);
-        // console.log(cart);
         res.render('user/cart',{user:req.session.user,cart,messages:req.flash()})
     }catch(error){
+      console.log(`an error happened ${error}`);
+    }
+  }
 
+  const getcartinsideForSafeer = async(req,res) => {
+    try{
+        const cart = await cartModel.findOne({userId:req.session.user._id}).populate('products.productId')
+        res.render('user/cart',{user:req.session.user,cart,messages:req.flash()})
+    }catch(error){
+      console.log(`an error happened ${error}`);
     }
   }
 
@@ -119,6 +136,7 @@ const updatingquantity = async (req, res) => {
       if(havingProducts >0) {
       res.render('user/checkout',{user})
       }else {
+        req.flash('error',"no products in the cart")
         res.redirect('/cart')
       }
     }catch(error){
@@ -141,14 +159,14 @@ const updatingquantity = async (req, res) => {
         // console.log(Product);
 
         if(!product) {
-          req.flash("error","product not found")
+          req.flash('error',"product not found")
           isRedirected = true;
           break;
         }
 
         if(cartquantity >Product.AvailableQuantity || Product.AvailableQuantity ==0){
           // console.log(Product.AvailableQuantity);
-          req.flash("error","the product is out of stock")
+          req.flash('error',"the product is out of stock")
           isRedirected = true
           break;
         }
@@ -167,15 +185,40 @@ const updatingquantity = async (req, res) => {
 
   const postcheckout = async(req,res) =>{
     try{
+      let redirected = false;
+      console.log(req.body);
       const { AddressId,paymentMethod} = req.body
-  
+      
       const cart = await cartModel.findOne({userId:req.session.user._id})
+      console.log(cart,"gorhoihoihoihyh");
+
+      for(const product of cart.products){
+        console.log("in for");
+        cartQuantity = product.Quantity                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+        const Product = await productModel.findOne({_id:product.productId})
+        if(!Product) {
+          console.log('there is no product');
+          req.flash('error','product is not available')
+          redirected = true
+          res.json({status: false, url: '/cart', error: true, message:'product is not available'});   
+        }
+        else if(cartQuantity > Product.AvailableQuantity || Product.AvailableQuantity == 0) {
+          console.log('in else');
+          req.flash('error','products is not available')
+          console.log(req.flash());
+
+          redirected = true
+          res.json({status: false, url: '/cart'});   
+        }
+      }
+
       // console.log(cart);
+      if (redirected === false ) {
+  
       const userId = req.session.user._id
       const products = cart.products
       const TotalPrice = req.session.totalPrice
       const address = await usermodel.findOne({_id:req.session.user._id, 'Address._id':AddressId},{'Address.$':1})
-      // console.log(address.Address[0].Name);
       const Address = {
         Name:address.Address[0].Name,
         AddressLane:address.Address[0].AddressLane,
@@ -195,29 +238,36 @@ const updatingquantity = async (req, res) => {
         ExpextedDeliveryDate:moment().add(4,"days").format('llll')
       })
       // console.log(neworders);
-     const deletedcart = await cartModel.findByIdAndDelete(cart._id)
-      const orders = await neworders.save()
+      console.log("ivide ethi karthik");
+    if(paymentMethod === 'cod'){
       
-      for(const product of orders.products){
-        console.log(product._id,"PRODUCT ID");
-        console.log(product.Quantity,"PRODUCT QUANTITY");
-        const Product = await productModel.findById(product.productId)
-        if(Product){
-          const newQuantity = Product.AvailableQuantity - product.Quantity
-          // console.log(newQuantity);
-          if(newQuantity <= 0) {
-            Product.AvailableQuantity = 0;
-            Product.Status = "OUT OF STOCK"
-            await Product.save();
-          }else{
-            Product.AvailableQuantity =Product.AvailableQuantity - product.Quantity
-            await Product.save();
-          }
+      const orders = await neworders.save()
+
+      const deletedcart = await cartModel.findByIdAndDelete(cart._id)   
+    // console.log(orders);
+
+    for(const product of orders.products){
+      console.log(product._id,"PRODUCT ID");
+      console.log(product.Quantity,"PRODUCT QUANTITY");
+      const Product = await productModel.findById(product.productId)
+      if(Product){
+        const newQuantity = Product.AvailableQuantity - product.Quantity
+        // console.log(newQuantity);
+        if(newQuantity <= 0) {
+          Product.AvailableQuantity = 0;
+          Product.Status = "OUT OF STOCK"
+          await Product.save();
         }else{
-          req.flash("error","product is not found")
-          res.rediret('/cart')
+          Product.AvailableQuantity =Product.AvailableQuantity - product.Quantity
+          await Product.save();
         }
-      } if(paymentMethod == 'cod'){
+      }else{
+        req.flash("error","product is not found")
+        res.json({status:false,url:'/cart'})
+      }
+    }
+    
+
         const user = req.session.user
         const email = req.session.user.email
       const transporter = nodemailer.createTransport({
@@ -244,9 +294,94 @@ const updatingquantity = async (req, res) => {
               return console.log(error);
           }
         })
+        console.log("reaching hhhhhhhhai");
+        res.json({status:false,codsuccess:true,url:'/ordersuccess'})
 
-        res.redirect('/ordersuccess')
-      }
+      }else if(paymentMethod ==='online'){
+        
+        const orders = await neworders.save()  ///order is placed//
+
+        const orderdetails =  {
+          amount:orders.TotalPrice,
+          receipt:orders._id,
+        }
+        const user = await usermodel.findOne({_id:req.session.user._id})
+        const order = await Razorpay.createRazorpayOrder(orderdetails)
+        console.log(order,"hiiiiii");
+        
+        
+        for(const product of orders.products){
+          console.log(product._id,"PRODUCT ID");
+          console.log(product.Quantity,"PRODUCT QUANTITY");
+          const Product = await productModel.findById(product.productId)
+          if(Product){
+            const newQuantity = Product.AvailableQuantity - product.Quantity
+            // console.log(newQuantity);
+            if(newQuantity <= 0) {
+              Product.AvailableQuantity = 0;
+              Product.Status = "OUT OF STOCK"
+              await Product.save();
+            }else{
+              Product.AvailableQuantity =Product.AvailableQuantity - product.Quantity
+              await Product.save();
+              const deletedcart = await cartModel.findByIdAndDelete(cart._id)   //cart deleted//
+            }
+          }else{
+            req.flash("error","product is not found")
+            res.rediret('/cart')
+          }
+          console.log(order,user)
+          res.json({status: true,order,user})
+        }
+
+
+      }else if(paymentMethod === "wallet"){
+        // console.log(req.session.totalPrice);
+        const user = await usermodel.findOne({_id:req.session.user._id})
+        // console.log(user.WalletAmount)
+        const totalPrice = req.session.totalPrice
+        const WalletAmount = user.WalletAmount
+        console.log(WalletAmount);
+        if(WalletAmount >= totalPrice){
+          const orders = await neworders.save() 
+
+          for(const product of orders.products){
+            console.log(product._id,"PRODUCT ID");
+            console.log(product.Quantity,"PRODUCT QUANTITY");
+            const Product = await productModel.findById(product.productId)
+            if(Product){
+              const newQuantity = Product.AvailableQuantity - product.Quantity
+              // console.log(newQuantity);
+              if(newQuantity <= 0) {
+                Product.AvailableQuantity = 0;
+                Product.Status = "OUT OF STOCK"
+                req.flash('error',"product is out of stock")
+                await Product.save();
+              }else{
+                Product.AvailableQuantity =Product.AvailableQuantity - product.Quantity
+                await Product.save();
+              }
+            }else{
+              req.flash("error","product is not found")
+              res.json({status:false,url:'/cart'})
+            }
+          }
+
+         
+          const deletedcart = await cartModel.findByIdAndDelete(cart._id)   //cart deleted//
+
+          res.json({status:true,codsuccess:true,url:'/ordersuccess'})
+          const remainingAmount = WalletAmount-totalPrice
+          const user = await usermodel.findByIdAndUpdate(req.session.user._id,{WalletAmount:remainingAmount})
+          const order = await ordermodel.findOneAndUpdate({_id:orders._id},{PaymentStatus:"paid"})
+          console.log(user);
+          console.log(order);
+        }else{
+          console.log("jjjjjj");
+          req.flash("error",`the wallet contains only ${WalletAmount} rupees`)
+          res.json({status:false,url:'/cart'})
+        }
+      }}
 
     }catch(error){
       console.log(error);
@@ -274,5 +409,45 @@ const updatingquantity = async (req, res) => {
     }
   }
 
-module.exports = {getusercart,updatingquantity,getremovefromcart,getcartinside,getcheckout,postcart,postcheckout,
-getordersuccess,getprofilecart}
+
+  const postverifypayment = async(req,res) =>{
+    try{
+      console.log(req.body,"verifypayment");
+      function generateSignature(data, secret) {
+        const hmac = crypto.createHmac('sha256', 'kI2Wwrnm0R3qsx0GbvgrErXm');
+        hmac.update(data);
+        return hmac.digest('hex');
+    }
+      console.log("reached");
+      const generatedSignature = generateSignature(req.body.payment.razorpay_order_id + "|" + req.body.payment.razorpay_payment_id,'kI2Wwrnm0R3qsx0GbvgrErXm')
+      // console.log(req.body);
+      // console.log(generatedSignature);
+      // console.log(req.body.payment.razorpay_signature);
+      if(generatedSignature === req.body.payment.razorpay_signature){
+        const orderId = new mongoose.Types.ObjectId( req.body.order.receipt);
+        const updatedorder = await ordermodel.findByIdAndUpdate(orderId,{PaymentMethod:"online",PaymentStatus:"paid",Status:"Order Placed"})
+        console.log(updatedorder);
+        const deletedcart = await cartModel.findOneAndDelete({userId:req.session.user._id})
+        console.log(updatedorder);
+        res.json({success:true, url:'/ordersuccess'})
+      }else{
+        res.status(403).json({success:false,error:"invalid signature"})
+      }
+    }catch(error){
+      console.log(error);  
+    }
+  }
+
+module.exports = {
+  getusercart, 
+  updatingquantity, 
+  getremovefromcart,
+  getcartinside, 
+  getcheckout, 
+  postcart, 
+  postcheckout,
+  getordersuccess, 
+  getprofilecart, 
+  postverifypayment, 
+  getcartinsideForSafeer
+}

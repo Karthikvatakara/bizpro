@@ -30,6 +30,10 @@ const Userschema = mongoose.Schema( {
      Status:{
         type:String,
         default:'Active'
+     },
+     WalletAmount:{
+        type:Number,
+        default:0
      }
 })
 

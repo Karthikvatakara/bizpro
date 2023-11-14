@@ -35,7 +35,7 @@ const orderSchema = new Schema({
     },
     Status: {
         type: String,
-        default: "order Placed"
+        default: "Order Placed"
     },
     products: [{
         productId: {
@@ -69,6 +69,9 @@ const orderSchema = new Schema({
     },
     ExpectedDeliveryDate: {
         type: Date // Adjusted to Date type for better handling
+    },
+    returnReason:{
+        type: String
     }
 });
 
