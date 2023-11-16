@@ -401,7 +401,7 @@ const updatingquantity = async (req, res) => {
   const getprofilecart = async(req,res) =>{
     try{
       const user = await usermodel.findOne({_id:req.session.user._id})
-      const cart = await cartModel.findOne({userId:req.session.user._id})
+      const cart = await cartModel.findOne({userId:req.session.user._id}).populate('products.productId')
       
       res.render('user/profilecart',{user,cart})
     }catch(error){

@@ -36,7 +36,7 @@ router.get('/usershop/brand/:id',userAuth.userexist,usercontroller.getusershop)
 
 router.get('/logout',usercontroller.logout)
 
-router.get('/product/:id',userAuth.userexist,usercontroller.getproduct)
+router.get('/product/:id',userAuth.userToken,usercontroller.getproduct)
 
 router.get('/addtocart/:id',userAuth.userToken,cartcontroller.getusercart)
 
@@ -64,16 +64,22 @@ router.post('/checkout',userAuth.userToken,cartcontroller.postcheckout)
 
 router.get('/ordersuccess',userAuth.userToken,cartcontroller.getordersuccess)
 
-router.get('/orderhistory',ordercontroller.getuserorderhistory)
-router.get('/order/orderdetails/:id',ordercontroller.getuserorderdetails)
+router.get('/orderhistory',userAuth.userToken,ordercontroller.getuserorderhistory)
+router.get('/order/orderdetails/:id',userAuth.userToken,ordercontroller.getuserorderdetails)
 
-router.get('/trackorder',ordercontroller.getUserTrackOrderDetails)
+router.get('/trackorder',userAuth.userToken,ordercontroller.getUserTrackOrderDetails)
 
-router.get('/order/cancel/:id',ordercontroller.getuserordercancel)
+router.get('/order/cancel/:id',userAuth.userToken,ordercontroller.getuserordercancel)
 
 router.post('/verify-payment',cartcontroller.postverifypayment)
 
 router.post('/order/return/:id',ordercontroller.postorderreturn)
+router.post('/order/cancelReturnRequest/:id',ordercontroller.postCancelReturnRequest)
+
+router.post('/review/submit',ordercontroller.postReviewSubmit)
+
+router.get('/wallet',userAuth.userToken,usercontroller.getUserWallet)
+router.get('/myreviews',userAuth.userToken,ordercontroller.getMyReviews)
 
 
 module.exports = router

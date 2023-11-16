@@ -75,6 +75,6 @@ const orderSchema = new Schema({
     }
 });
 
-const Order = model('Order', orderSchema); // Changed the model name to singular 'Order' for consistency
+const Order = model('Order', orderSchema); 
 
 module.exports = Order;

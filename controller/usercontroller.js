@@ -10,7 +10,8 @@ const userAuth = require('../middlewares/userauth')
 const categoryModel = require('../model/categorymodel')
 const brandModel = require('../model/brandmodel')
 const cartModel = require('../model/cartmodel')
-
+const orderModel = require('../model/ordermodel')
+const reviewModel = require('../model/reviewmodel')
 
 //for displaying userhome
 const viewproduct = async(req,res) => {
@@ -353,13 +354,41 @@ const signup = async(req,res) => {
     const getproduct = async(req,res) =>{
         try{
             // console.log(req.params.id);
+            let neworder = false
             const product = await productModel.findOne({_id:req.params.id})
             if(!product) {
                 res.send("product not found")
             }
             console.log(product);
-            // res.send("hkj")
-            res.render('user/productdescription',{product,user:req.session.user})
+            const order= await orderModel.find({userId:req.session.user._id,products:{$elemMatch:{productId:req.params.id}},Status:'Delivered'})
+            const Reviews = await reviewModel.find({productId:req.params.id}).populate('userId')
+            // console.log(order,"order");
+            // console.log(neworder,"1");
+           const reviews =Reviews.map((review) =>{
+
+                if(review.rating == 1){
+                    review.ratings = [true,false,false,false,false]
+                }else if(review.rating == 2){
+                    review.ratings = [true,true,false,false,false]
+                }else if(review.rating == 3){
+                    review.ratings = [true,true,true,false,false]
+                }else if(review.rating == 4){
+                    review.ratings = [true,true,true,true,false]
+                }else if(review.rating == 5){
+                    review.ratings = [true,true,true,true,true]
+                }
+                return {
+                    name:review.userId.name,
+                    reviewText:review.reviewText,
+                    ratings:review.ratings
+                }
+            })
+
+            if(order.length>0){
+             neworder = true
+            }
+            console.log(neworder,"2");            
+            res.render('user/productdescription',{product,user:req.session.user,neworder,reviews})
         }catch(error){
             console.log(error);
         }
@@ -517,8 +546,16 @@ const getaddaddresscheckout = async(req,res) => {
     }
 }
 
+const getUserWallet = async(req,res) => {
+    try{
+        const user = await usermodel.findOne({_id:req.session.user._id})
+        res.render('user/userwallet',{user})
+    }catch(error){
+        console.log(error);
+    }
+}
 
 module.exports = {viewproduct,login,postlogin,signup,logged,getemailverification,otpAuth,postemailverification,
     resendotp,getforgotpassword,postforgotpassword,getforgototp,postforgototp,getforgotpasscheck,
     postforgotpasscheck,getproduct,getusershop,logout,getaddaddress,postaddaddress,posteditaddress,
-    getdeleteaddress,getaddaddresscheckout}
+    getdeleteaddress,getaddaddresscheckout, getUserWallet}

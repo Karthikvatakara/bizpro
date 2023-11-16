@@ -7,6 +7,7 @@ const usermodel = require('../model/usermodel')
 const adminModel = require('../model/adminmodel')
 const bcrypt = require('bcrypt')
 const ordermodel = require('../model/ordermodel')
+const reviewModel = require('../model/reviewmodel')
 
 const getadminorders = async(req,res) => {
     try{
@@ -156,7 +157,6 @@ const postorderreturn = async(req,res) =>{
         res.json({success:true})
     }catch(error){
         console.log(error);
-        res.json({safeer:true})
     }
 }
 
@@ -186,12 +186,57 @@ const  postReturnRequestHandle = async(req,res) =>{
             const userId = order.userId
             if(order.PaymentStatus === 'paid'){
                 const user = await usermodel.findOneAndUpdate({_id:userId},{$inc:{WalletAmount:order.TotalPrice}},{new:true})
-            }
-            const Order = await ordermodel.findByIdAndUpdate(orderId,{PaymentStatus:"refunded",Status:"returned"},{new:true})
+                const Order = await ordermodel.findByIdAndUpdate(orderId,{PaymentStatus:"refunded",Status:"returned"},{new:true})
 
             console.log(order.products,"nnnnnnnnnn");
-            res.redirect('/admin/order/return-request')
+            order.products.forEach(async(item) => {
+                const product = await productModel.findOneAndUpdate({_id:item.productId},{$inc:{AvailableQuantity:item.Quantity}})
+                console.log(product);
+            })
+            }
+        }else{
+            const order = await ordermodel.findOneAndUpdate({_id:orderId},{Status:"return rejected"},{new:true})
         }
+        res.json({succes:true})
+    }catch(error){
+        console.log(error);
+    }
+}
+
+const postCancelReturnRequest = async(req,res) => {
+    try{
+    console.log("hi");
+    const order = await ordermodel.findOneAndUpdate({_id:req.params.id},{Status:"Delivered"})
+    res.json({success:true})
+    }catch(error){
+        console.log(error);
+    }
+}
+
+const postReviewSubmit = async(req,res) =>{
+    try{
+        // console.log(req.params.id);
+    console.log(req.body);
+    const {rating,review,productId} = req.body
+    // console.log(rating);
+    const newReview = new reviewModel({
+        productId: productId,
+        userId: req.session.user._id,
+        rating: rating,
+        reviewText :review
+    })
+    newReview.save()
+    res.json({success:true})
+    }catch(error){
+        console.log(error);
+    }
+}
+
+const getMyReviews = async(req,res) =>{
+    try{
+    const user = await userModel.findOne({_id:req.session.user._id})    
+    const review = await reviewModel.find({userId:req.session.user._id}).populate('productId')
+    res.render('user/myreviews',{review,user})
     }catch(error){
         console.log(error);
     }
@@ -207,5 +252,8 @@ module.exports = {
     getuserordercancel,
     postorderreturn, 
     getreturnrequest, 
-    postReturnRequestHandle
+    postReturnRequestHandle, 
+    postCancelReturnRequest,    
+    postReviewSubmit, 
+    getMyReviews
     }
